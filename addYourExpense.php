@@ -39,7 +39,7 @@ $expenses = mysqli_query($con, $sql);
     <header>
         <nav class="navbar">
             <ul>
-                <li class="ulLink"><a href="Home.html" class="Home">Home</a></li>
+                <li class="ulLink"><a href="Dashboard.html" class="Home">Home</a></li>
                 <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
                 <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
                 <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
