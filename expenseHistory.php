@@ -60,6 +60,7 @@ while ($row = mysqli_fetch_assoc($weekExpensesResult)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Add Expense</title>
     <link rel="stylesheet" href="Assets/Style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>

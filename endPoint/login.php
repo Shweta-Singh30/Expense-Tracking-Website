@@ -12,7 +12,7 @@ if (isset($_POST['login'])) {
 
     $query = "SELECT Username, email, Password FROM user_register WHERE ";
     if (filter_var($login_field, FILTER_VALIDATE_EMAIL)) {
-        $query .= "email=?";
+       
     } else {
         $query .= "Username=?";
     }
