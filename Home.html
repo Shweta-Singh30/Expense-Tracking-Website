@@ -5,28 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
-    <title>Document</title>
+    <title>Expense Tracker</title>
 
     <link rel="stylesheet" href="Assets/Style.css">
-    <style>
-    
+    <style> 
+    body{
+        overflow-y:hidden ;
+    }
+        #homeImg{
+            background-image: url("Assets/exp.jpg");
+            width: 100%;
+            height: 554px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        @media only screen and (min-device-width: 400px) {
+            #homeImg {
+                background-image: url("Assets/exp.jpg");
+            }
+        }
+        form {
+            position: absolute;
+            background-color: rgba(255 255 255 / 51%);
+            /* border: 1px solid black; */
+            box-shadow: 2px 2px 8px 1px black;
+            margin: 120px 200px 0 350px;
+            padding: 70px;
+        }
+        .welcome {
+            
+            color: black;
+            padding-bottom: 10px;
+        }
+        .welcome2{
+            padding-left: 10px;
+            color:rgba(1, 1, 1, 0.811);
+        }
+        .hLogin{
+            background-color: red;
+            margin-left: 200px;
+           
+            margin-top: 40px;
+            padding: 7px;
+            width: 80px;
+            text-decoration: none;
+            color: white;
+            border-color: red;
+            border-radius: 5px 5px 5px 5px;
+
+        }
+        .wrap {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .button {
+            min-width: 80px;
+            min-height: 60px;
+             display: inline-flex;
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 1.3px;
+            font-weight: 700;
+            color: #313133;
+            background:white;
+            background: linear-gradient(90deg, rgb(135, 23, 135) 0%,rgb(251, 33, 33) 100%);
+            border: none;
+            border-radius: 1000px;
+            box-shadow: 12px 12px 24px rgb(182, 78, 78);
+            transition: all 0.3s ease-in-out 0s;
+            cursor: pointer;
+             outline: none;
+            position: relative;
+            padding: 10px;
+            margin-top: 70px;
+         }
+
+        .button::before {
+        content: '';
+        border-radius: 100px;
+        /* min-width: calc(300px + 12px);
+        min-height: calc(60px + 12px); */
+        /* border: 2px solid red; */
+        box-shadow: 0 0 60px rgba(255, 0, 0, 0.563);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+         transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: all .3s ease-in-out 0s;
+        }
+
+.button:hover, 
+.button:focus {
+  color: #313133;
+  transform: translateY(-6px);
+}
+
+.button:hover::before, 
+.button:focus::before {
+  opacity: 1;
+}
+
+.button::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid purple;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+.button:hover::after, 
+.button:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+  
+}
+
+
+
+Resources
     </style>
 </head>
 <body>
-    <header >
-        <nav class="navbar" >
+    <header>
+        <nav class="navbar">
             <ul>
-                <li class="ulLink"><a href="#" class="Home"><h3 style="font-family: cursive; font-size: 22px;"  >Expense Tracker</h3></a></li>
-              
-                <li class="ulLink"><button id="Logout"><a href="Login_front.php" class="Login">Login</a></button></li>
+                <li class="ulLink"><a href="#" class="Home"><h3 style="font-family: cursive; font-size: 22px;">Expense Tracker</h3></a></li>
+             
                 <li class="ulLink"><button id="Logout"><a href="Register.php" class="signup">Signup</a></button></li>
             </ul>
         </nav>
     </header>
-    <img src="Assets/exp.jpg" alt="" id="hImg">
+    <div id="homeImg">
+        <form>
+            <div id="welcome">
+                <h1 class="welcome" id="welcome-message" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"></h1>
+                <h1 class="welcome2" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(Your Personal Finance Manager)</h1>
+                
+            </div>
+            <div class="wrap">
+                    <button class="button"><a href="Login_front.php" style="text-decoration: none; color: white;">Login</a>
+            </div>
+        </form> 
+    </div>
     <footer></footer>
-    
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const welcomeMessage = "Welcome to Expense Tracker";
+            let index = 0;
+            const speed = 130; // typing speed in milliseconds
+
+            function typeWriter() {
+                if (index < welcomeMessage.length) {
+                    document.getElementById("welcome-message").textContent += welcomeMessage.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+
+            typeWriter();
+        });
+    </script>
 </body>
-
 </html>

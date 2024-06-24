@@ -8,6 +8,11 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="Assets/Style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body{
+            background-image: url("Assets/login.jpg");
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -19,6 +24,7 @@
             <li class="ulLink"><button id="Logout"><a href="Register.php" class="Logout">Signup</a></button></li>
         </ul>
     </nav>
+    <div id="lImg">
     </header>
     <div class="container1">
         <h2>Login form</h2>
@@ -41,6 +47,7 @@
         <div class="already_account">
             <h4>Have not an account?<a href="Register.php">Register</a></h4>
         </div>
+    </div>
     </div>
     <footer></footer>
 </body>

@@ -9,6 +9,12 @@
     <title>Register</title>
     <link rel="stylesheet" href="Assets/Style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body{
+            background-image: url("Assets/login.jpg");
+            
+        }
+    </style>
 </head>
 <body>
     <header>

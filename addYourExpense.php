@@ -63,6 +63,10 @@ $expenses = mysqli_query($con, $sql);
                     <label for="description" class="drs">Description</label>
                     <textarea id="description" name="description"><?php echo isset($expense_to_edit) ? $expense_to_edit['description'] : ''; ?></textarea><br>
                 </div>
+                <div class="add3">
+                    <label for="createdAt" class="date">Date</label>
+                    <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? date('Y-m-d', strtotime($expense_to_edit['createdAt'])) : ''; ?>" required><br>
+                </div>
             </div>
             <div>
                 <?php if (isset($expense_to_edit)): ?>
@@ -84,6 +88,7 @@ $expenses = mysqli_query($con, $sql);
                         <td class="tHead"><h3>Name</h3></td>
                         <td class="tHead"><h3>Price</h3></td>
                         <td class="tHead"><h3>Description</h3></td>
+                        <td class="tHead" type="date"><h3>Created At</h3></td>
                         <td class="tHead" width="25%"><h3>Action</h3></td>
                     </tr>
                 </thead>
@@ -95,15 +100,16 @@ $expenses = mysqli_query($con, $sql);
                                 <td><?php echo $expense['expenseName']; ?></td>
                                 <td><?php echo $expense['price']; ?></td>
                                 <td><?php echo $expense['description']; ?></td>
+                                <td><?php echo $expense['createdAt']; ?></td>
                                 <td>
                                     <button class="edit"><a class="edit" href="addYourExpense.php?edit_id=<?php echo $expense['S.N.']; ?>">Edit</a></button>
-                                   <button class="del"> <a class="del" href="addYourExpense.php?delete_id=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a></button>
+                                    <button class="del"><a class="del" href="addYourExpense.php?delete_id=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a></button>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="5" style="text-align: center">No expenses found!</td>
+                            <td colspan="6" style="text-align: center">No expenses found!</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

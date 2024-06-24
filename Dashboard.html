@@ -7,32 +7,63 @@
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Dashboard</title>
     <link rel="stylesheet" href="Assets/Style.css">
+    <style>
+        body {
+            background-image: url("Assets/dashbrd.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Wiggle Animation */
+        .wiggle {
+            transition: transform 0.3s ease;
+        }
+
+        .wiggle:hover {
+            transform: rotateZ(-5deg) scale(1.1);
+        }
+    </style>
 </head>
 
-<body>
-        <header>
-            <nav class="navbar">
-                <ul>
-                    
-                    <li class="ulLink"><a href="Home.html" class="Home" >Home</a></li>
-                    <li class="ulLink" ><a href="#" id="Contact">Contact</a></li>
-                    <li class="ulLink" ><a href="#" id="aboutUs">About Us</a></li>
-                    <li class="ulLink" ><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
-                </ul>
-            </nav>
+<body style="background-color: rgba(189, 85, 85, 0.414);">
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li class="ulLink"><a href="Home.html" class="Home">Home</a></li>
+                <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
+                <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
+                <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
+            </ul>
+        </nav>
     </header>
 
     <div class="Expense">
-        <div class="addExpense">
-            <img class="eImg"  src="Assets/Expenses.jpg" alt="">
-           <h2 class="textExpense"><a href="addYourExpense.php" class="textExpense">Add Your Expenses</a></h2>
+        <div class="addExpense fade-in">
+            <img class="eImg wiggle" src="Assets/Expenses.jpg" alt="">
+            <h2 class="textExpense"><a href="addYourExpense.php" class="textExpense">Add Your Expenses</a></h2>
         </div>
-        <div class="historyExpense">
-            <img class="eImg" src="Assets/expenseHistory.jpg" alt="">
+        <div class="historyExpense fade-in">
+            <img class="eImg wiggle" src="Assets/expenseHistory.jpg" alt="">
             <h2 class="textExpense"><a href="expenseHistory.php" class="textExpense">Expense History</a></h2>
         </div>
-
-    </div> 
+    </div>
     <footer></footer>
 </body>
 
