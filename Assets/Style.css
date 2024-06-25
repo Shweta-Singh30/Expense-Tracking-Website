@@ -208,16 +208,16 @@ header {
 
 .addExpense {
    width: 320px;
-  
+   border: 1px solid red;
    margin: 145px 1px 130px 350px;
    display: inline-block;
-   box-shadow: 2px 2px 10px 6px rgba(0, 0, 0, 0.796);
+   box-shadow: 2px 2px 10px 6px rgba(0, 0, 0, 0.303);
 
 }
 
 .historyExpense {
    width: 320px;
-  
+   /* border: 1px solid white; */
    margin: 60px;
    display: inline-block;
    margin: 150px 200px 0 90px;

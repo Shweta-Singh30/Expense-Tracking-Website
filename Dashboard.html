@@ -12,37 +12,45 @@
             background-image: url("Assets/dashbrd.jpg");
             background-repeat: no-repeat;
             background-size: cover;
+            background-color: rgba(189, 85, 85, 0.414);
         }
 
-        /* Fade In Animation */
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
+        /* Zoom Animation */
+        .zoom {
+            animation: zoom 2s infinite;
         }
 
-        @keyframes fadeIn {
+        @keyframes zoom {
             0% {
-                opacity: 0;
-                transform: translateY(-20px);
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.04);
             }
             100% {
-                opacity: 1;
-                transform: translateY(0);
+                transform: scale(1);
             }
         }
-
-        /* Wiggle Animation */
         .wiggle {
-            transition: transform 0.3s ease;
+            cursor: pointer;
+            animation: zoom 2s infinite;;
         }
 
-        .wiggle:hover {
-            transform: rotateZ(-5deg) scale(1.1);
+        .wiggle.wiggle-45 {
+            animation: wiggle45 1s ease-in-out 1;
+        }
+
+        @keyframes wiggle45 {
+            0% { transform: rotate(25deg); }
+            25% { transform: rotate(-25deg); }
+            50% { transform: rotate(40deg); }
+            75% { transform: rotate(-10.5deg); }
+            100% { transform: rotate(0deg); }
         }
     </style>
 </head>
 
-<body style="background-color: rgba(189, 85, 85, 0.414);">
+<body>
     <header>
         <nav class="navbar">
             <ul>
@@ -55,16 +63,30 @@
     </header>
 
     <div class="Expense">
-        <div class="addExpense fade-in">
-            <img class="eImg wiggle" src="Assets/Expenses.jpg" alt="">
+        <div class="addExpense zoom wiggle">
+            <img class="eImg" src="Assets/Expenses.jpg" alt="">
             <h2 class="textExpense"><a href="addYourExpense.php" class="textExpense">Add Your Expenses</a></h2>
         </div>
-        <div class="historyExpense fade-in">
-            <img class="eImg wiggle" src="Assets/expenseHistory.jpg" alt="">
+        <div class="historyExpense zoom wiggle">
+            <img class="eImg" src="Assets/expenseHistory.jpg" alt="">
             <h2 class="textExpense"><a href="expenseHistory.php" class="textExpense">Expense History</a></h2>
         </div>
     </div>
     <footer></footer>
+
+    <script>
+        document.querySelectorAll('.wiggle').forEach(item => {
+            const triggerWiggle = () => {
+                item.classList.add('wiggle-45');
+                setTimeout(() => {
+                    item.classList.remove('wiggle-45');
+                }, 1000); // Match this duration with the animation duration
+            };
+
+            item.addEventListener('click', triggerWiggle);
+            item.addEventListener('mouseover', triggerWiggle);
+        });
+    </script>
 </body>
 
 </html>
