@@ -1,29 +1,78 @@
 <?php
+session_start();
 require('endPoint/Connection.php');
 
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
-    $delete_sql = "DELETE FROM addexpense WHERE `S.N.` = ?";
-    $stmt = mysqli_prepare($con, $delete_sql);
-    mysqli_stmt_bind_param($stmt, 'i', $delete_id);
-    mysqli_stmt_execute($stmt); 
-    header("Location: addYourExpense.php");
-    exit;
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: Home.html');
+    exit();
 }
 
-$expense_to_edit = null;
-if (isset($_GET['edit_id'])) {
-    $edit_id = $_GET['edit_id'];
-    $edit_sql = "SELECT * FROM addexpense WHERE `S.N.` = ?";
-    $stmt = mysqli_prepare($con, $edit_sql);
-    mysqli_stmt_bind_param($stmt, 'i', $edit_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $expense_to_edit = mysqli_fetch_assoc($result);
+$username = $_SESSION['username'];
+ // Get the next sequence number
+ $query = "SELECT MAX(`S.N.`) as max_sn FROM addexpense WHERE id = ?";
+ $stmt = $con->prepare($query);
+ $stmt->bind_param("s", $username);
+ $stmt->execute();
+ $result = $stmt->get_result();
+ $row = $result->fetch_assoc();
+ $next_sn = $row['max_sn'] + 1;
+
+ $stmt->close();
+
+// Add expense
+if (isset($_POST['add'])) {
+    $expenseName = $_POST['expenseName'];
+    $price = $_POST['price'];
+    $description = $_POST['description'];
+    $createdAt = $_POST['createdAt'];
+
+    $query = "INSERT INTO addexpense (`S.N.`, expenseName, price, description, date, id) VALUES (?, ?, ?, ?, ?,?)";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("isdsss",$next_sn, $expenseName, $price, $description, $createdAt, $username);
+
+    if ($stmt->execute()) {
+        header('Location: addYourExpense.php');
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
 
-$sql = "SELECT * FROM addexpense ORDER BY `S.N.` ASC"; 
-$expenses = mysqli_query($con, $sql);
+// Update expense
+if (isset($_POST['update'])) {
+    $expenseName = $_POST['expenseName'];
+    $price = $_POST['price'];
+    $description = $_POST['description'];
+    $createdAt = $_POST['createdAt'];
+    $edit_id = $_POST['edit_id'];
+
+    $query = "UPDATE addexpense SET expenseName = ?, price = ?, description = ?, date = ? WHERE `S.N.` = ? AND id = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("sdssis", $expenseName, $price, $description, $createdAt, $edit_id, $username);
+
+    if ($stmt->execute()) {
+        header('Location: addYourExpense.php');
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+// Fetch expenses
+$query = "SELECT * FROM addexpense WHERE id = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$expenses = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$con->close();
 ?>
 
 <!DOCTYPE html>
@@ -37,84 +86,82 @@ $expenses = mysqli_query($con, $sql);
 </head>
 <body>
     
-    <header>
-        <nav class="navbar">
-            <ul>
-                <li class="ulLink"><a href="Dashboard.html" class="Home">Home</a></li>
-                <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
-                <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
-                <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav class="navbar">
+        <ul>
+            <li class="ulLink"><a href="Dashboard.html" class="Home">Home</a></li>
+            <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
+            <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
+            <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
+        </ul>
+    </nav>
+</header>
 
-    <center>
-        <form action="endPoint/addExpense.php" method="POST" class="eForm">
-            <div>
-                <div class="add">
-                    <label for="expenseName">Expense Name</label>
-                    <input type="text" id="expenseName" name="expenseName" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['expenseName'] : ''; ?>" required><br>
-                </div>
-                <div class="add1">
-                    <label for="price" class="pr">Price</label>
-                    <input type="number" id="price" name="price" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['price'] : ''; ?>" required><br>
-                </div>
-                <div class="add2">
-                    <label for="description" class="drs">Description</label>
-                    <textarea id="description" name="description"><?php echo isset($expense_to_edit) ? $expense_to_edit['description'] : ''; ?></textarea><br>
-                </div>
-                <div class="add3">
-                    <label for="createdAt" class="date">Date</label>
-                    <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? date('Y-m-d', strtotime($expense_to_edit['createdAt'])) : ''; ?>" required><br>
-                </div>
+<center>
+    <form action="addYourExpense.php" method="POST" class="eForm">
+        <div>
+            <div class="add">
+                <label for="expenseName">Expense Name</label>
+                <input type="text" id="expenseName" name="expenseName" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['expenseName'] : ''; ?>" required><br>
             </div>
-            <div>
-                <?php if (isset($expense_to_edit)): ?>
-                    <input type="hidden" name="edit_id" value="<?php echo $expense_to_edit['S.N.']; ?>">
-                    <input type="submit" class="addButton" value="Save" name="update">
-                <?php else: ?>
-                    <input type="submit" class="addButton" value="Add" name="add">
-                <?php endif; ?>
+            <div class="add1">
+                <label for="price" class="pr">Price</label>
+                <input type="number" id="price" name="price" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['price'] : ''; ?>" required><br>
             </div>
-        </form>
-    </center>
-
-    <center>
-        <div class="createTable" width="100%">
-            <table>
-                <thead>
-                    <tr >
-                        <td class="tHead"><h3>S.N.</h3></td>
-                        <td class="tHead"><h3>Name</h3></td>
-                        <td class="tHead"><h3>Price</h3></td>
-                        <td class="tHead"><h3>Description</h3></td>
-                        <td class="tHead" type="date"><h3>Created At</h3></td>
-                        <td class="tHead" width="25%"><h3>Action</h3></td>
-                    </tr>
-                </thead>
-                <tbody id="expenseTable">
-                    <?php if (mysqli_num_rows($expenses) > 0) :?>
-                        <?php while ($expense = mysqli_fetch_assoc($expenses)) : ?>
-                            <tr>
-                                <td><?php echo $expense['S.N.']; ?></td>
-                                <td><?php echo $expense['expenseName']; ?></td>
-                                <td><?php echo $expense['price']; ?></td>
-                                <td><?php echo $expense['description']; ?></td>
-                                <td><?php echo $expense['createdAt']; ?></td>
-                                <td>
-                                    <button class="edit"><a class="edit" href="addYourExpense.php?edit_id=<?php echo $expense['S.N.']; ?>">Edit</a></button>
-                                    <button class="del"><a class="del" href="addYourExpense.php?delete_id=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a></button>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="6" style="text-align: center">No expenses found!</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+            <div class="add2">
+                <label for="description" class="drs">Description</label>
+                <textarea id="description" name="description"><?php echo isset($expense_to_edit) ? $expense_to_edit['description'] : ''; ?></textarea><br>
+            </div>
+            <div class="add3">
+                <label for="createdAt" class="date">Date</label>
+                <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['createdAt'] : date('Y-m-d'); ?>" required><br>
+            </div>
         </div>
-    </center>
+        <div>
+            <?php if (isset($expense_to_edit)): ?>
+                <input type="hidden" name="edit_id" value="<?php echo $expense_to_edit['S.N.']; ?>">
+                <input type="submit" class="addButton" value="Save" name="update">
+            <?php else: ?>
+                <input type="submit" class="addButton" value="Add" name="add">
+            <?php endif; ?>
+        </div>
+    </form>
+</center>
+
+<center>
+    <div class="createTable" width="100%">
+        <table>
+            <thead>
+                <tr>
+                    <td class="tHead"><h3>S.N.</h3></td>
+                    <td class="tHead"><h3>Name</h3></td>
+                    <td class="tHead"><h3>Price</h3></td>
+                    <td class="tHead"><h3>Description</h3></td>
+                    <td class="tHead"><h3>Created At</h3></td>
+                    <td class="tHead" width="25%"><h3>Action</h3></td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($expenses as $expense): ?>
+                    <tr>
+                        <td><?php echo $expense['S.N.']; ?></td>
+                        <td><?php echo $expense['expenseName']; ?></td>
+                        <td><?php echo $expense['price']; ?></td>
+                        <td><?php echo $expense['description']; ?></td>
+                        <td><?php echo $expense['date']; ?></td>
+                        <td>
+                            <a href="editExpense.php?id=<?php echo $expense['S.N.']; ?>">Edit</a>
+                            <a href="deleteExpense.php?id=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php if (empty($expenses)) : ?>
+            <p style="text-align: center;">No expenses found!</p>
+        <?php endif; ?>
+    </div>
+</center>
+
 </body>
 </html>

@@ -8,10 +8,11 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="Assets/Style.css">
     <style>
-        body {
+        .dImg {
             background-image: url("Assets/dashbrd.jpg");
             background-repeat: no-repeat;
             background-size: cover;
+            height: fit-content;
             background-color: rgba(189, 85, 85, 0.414);
         }
 
@@ -61,7 +62,7 @@
             </ul>
         </nav>
     </header>
-
+    <div class="dImg"> 
     <div class="Expense">
         <div class="addExpense zoom wiggle">
             <img class="eImg" src="Assets/Expenses.jpg" alt="">
@@ -72,7 +73,10 @@
             <h2 class="textExpense"><a href="expenseHistory.php" class="textExpense">Expense History</a></h2>
         </div>
     </div>
-    <footer></footer>
+</div>
+    <footer>
+
+    </footer>
 
     <script>
         document.querySelectorAll('.wiggle').forEach(item => {
