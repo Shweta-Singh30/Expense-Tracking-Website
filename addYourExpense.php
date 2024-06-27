@@ -9,16 +9,16 @@ if (!isset($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
- // Get the next sequence number
- $query = "SELECT MAX(`S.N.`) as max_sn FROM addexpense WHERE id = ?";
- $stmt = $con->prepare($query);
- $stmt->bind_param("s", $username);
- $stmt->execute();
- $result = $stmt->get_result();
- $row = $result->fetch_assoc();
- $next_sn = $row['max_sn'] + 1;
 
- $stmt->close();
+// Get the next sequence number
+$query = "SELECT MAX(`S.N.`) as max_sn FROM addexpense WHERE id = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$next_sn = $row['max_sn'] + 1;
+$stmt->close();
 
 // Add expense
 if (isset($_POST['add'])) {
@@ -29,7 +29,7 @@ if (isset($_POST['add'])) {
 
     $query = "INSERT INTO addexpense (`S.N.`, expenseName, price, description, date, id) VALUES (?, ?, ?, ?, ?,?)";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("isdsss",$next_sn, $expenseName, $price, $description, $createdAt, $username);
+    $stmt->bind_param("isdsss", $next_sn, $expenseName, $price, $description, $createdAt, $username);
 
     if ($stmt->execute()) {
         header('Location: addYourExpense.php');
@@ -60,6 +60,38 @@ if (isset($_POST['update'])) {
         echo "Error: " . $stmt->error;
     }
 
+    $stmt->close();
+}
+
+// Delete expense
+if (isset($_GET['delete'])) {
+    $delete_id = $_GET['delete'];
+
+    $query = "DELETE FROM addexpense WHERE `S.N.` = ? AND id = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("is", $delete_id, $username);
+
+    if ($stmt->execute()) {
+        header('Location: addYourExpense.php');
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+// Fetch expense to edit
+$expense_to_edit = null;
+if (isset($_GET['edit'])) {
+    $edit_id = $_GET['edit'];
+
+    $query = "SELECT * FROM addexpense WHERE `S.N.` = ? AND id = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("is", $edit_id, $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $expense_to_edit = $result->fetch_assoc();
     $stmt->close();
 }
 
@@ -114,7 +146,7 @@ $con->close();
             </div>
             <div class="add3">
                 <label for="createdAt" class="date">Date</label>
-                <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['createdAt'] : date('Y-m-d'); ?>" required><br>
+                <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['date'] : date('Y-m-d'); ?>" required><br>
             </div>
         </div>
         <div>
@@ -150,8 +182,8 @@ $con->close();
                         <td><?php echo $expense['description']; ?></td>
                         <td><?php echo $expense['date']; ?></td>
                         <td>
-                            <a href="editExpense.php?id=<?php echo $expense['S.N.']; ?>">Edit</a>
-                            <a href="deleteExpense.php?id=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</a>
+                            <a href="addYourExpense.php?edit=<?php echo $expense['S.N.']; ?>">Edit</a>
+                            <a href="addYourExpense.php?delete=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
