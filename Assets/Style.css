@@ -8,7 +8,7 @@
 body {
    background-color: #beb1b1;
    margin-bottom: 0%;
-   overflow-y:hidden ;
+   /* overflow-y:hidden ; */
 }
 
 header {
@@ -503,5 +503,14 @@ footer {
       padding: 5px;
       background-color: rgb(211, 211, 28);
     }
-   
-   
+   .sInp{
+     text-align: center;
+     margin-left: 150px;
+   }
+   /* .chart{
+      display: inline;
+   } */
+
+   .chart{
+      border:1px solid purple;
+   }
