@@ -11,6 +11,7 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 $sortOption = isset($_POST['sortOptions']) ? $_POST['sortOptions'] : '';
+$filterOption = isset($_POST['filterOptions']) ? $_POST['filterOptions'] : '';
 $searchQuery = isset($_POST['searchQuery']) ? $_POST['searchQuery'] : '';
 $selectedDate = isset($_POST['selectedDate']) ? $_POST['selectedDate'] : '';
 $selectedWeek = isset($_POST['selectedWeek']) ? $_POST['selectedWeek'] : '';
@@ -21,19 +22,19 @@ $query = "SELECT * FROM addexpense WHERE id = ?";
 $params = [$username];
 $startOfWeek = date('Y-m-d', strtotime($selectedWeek));
 
-if ($sortOption == 'date' && !empty($selectedDate)) {
+if ($filterOption == 'date' && !empty($selectedDate)) {
     $query .= " AND DATE(date) = ?";
     $params[] = $selectedDate;
-} elseif ($sortOption == 'week' && !empty($selectedWeek)) {
+} elseif ($filterOption == 'week' && !empty($selectedWeek)) {
     $query .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK)";
     $params[] = $startOfWeek;
     $params[] = $startOfWeek;
-} elseif ($sortOption == 'month' && !empty($selectedMonth)) {
+} elseif ($filterOption == 'month' && !empty($selectedMonth)) {
     $startOfMonth = date('Y-m-01', strtotime($selectedMonth));
     $query .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 MONTH)";
     $params[] = $startOfMonth;
     $params[] = $startOfMonth;
-} elseif ($sortOption == 'year' && !empty($selectedYear)) {
+} elseif ($filterOption == 'year' && !empty($selectedYear)) {
     $query .= " AND YEAR(date) = ?";
     $params[] = $selectedYear;
 }
@@ -45,7 +46,11 @@ if (!empty($searchQuery)) {
     $params[] = $searchParam;
 }
 
-$query .= " ORDER BY `S.N.` ASC";
+if ($sortOption == 'expense') {
+    $query .= " ORDER BY price DESC";
+} else {
+    $query .= " ORDER BY date ASC";
+}
 
 $stmt = $con->prepare($query);
 
@@ -67,10 +72,10 @@ $dailyData = [];
 $weeklyData = [];
 $monthlyData = [];
 
-if ($sortOption == 'date' && !empty($selectedDate)) {
+if ($filterOption == 'date' && !empty($selectedDate)) {
     $totalQuery .= " AND DATE(date) = ?";
     $totalParams[] = $selectedDate;
-} elseif ($sortOption == 'week' && !empty($selectedWeek)) {
+} elseif ($filterOption == 'week' && !empty($selectedWeek)) {
     $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK)";
     $totalParams[] = $startOfWeek;
     $totalParams[] = $startOfWeek;
@@ -85,7 +90,7 @@ if ($sortOption == 'date' && !empty($selectedDate)) {
         $dailyData[$day] += $expense['price'];
     }
     $data = array_values($dailyData);
-} elseif ($sortOption == 'month' && !empty($selectedMonth)) {
+} elseif ($filterOption == 'month' && !empty($selectedMonth)) {
     $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 MONTH)";
     $totalParams[] = $startOfMonth;
     $totalParams[] = $startOfMonth;
@@ -101,7 +106,7 @@ if ($sortOption == 'date' && !empty($selectedDate)) {
         $dailyData[$date] += $expense['price'];
     }
     $data = array_values($dailyData);
-} elseif ($sortOption == 'year' && !empty($selectedYear)) {
+} elseif ($filterOption == 'year' && !empty($selectedYear)) {
     $totalQuery .= " AND YEAR(date) = ?";
     $totalParams[] = $selectedYear;
 
@@ -132,19 +137,6 @@ $stmt->bind_param($types, ...$totalParams);
 $stmt->execute();
 $result = $stmt->get_result();
 $totalExpense = $result->fetch_assoc()['totalExpense'] ?? 0;
-$stmt->close();
-
-$weekExpensesQuery = "SELECT DATE(date) as date, SUM(price) as total FROM addexpense WHERE id = ? AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK) GROUP BY DATE(date)";
-$weekExpensesParams = [$username, $startOfWeek, $startOfWeek];
-
-$stmt = $con->prepare($weekExpensesQuery);
-$stmt->bind_param('sss', $username, $startOfWeek, $startOfWeek);
-$stmt->execute();
-$result = $stmt->get_result();
-$weekExpenses = [];
-while ($row = $result->fetch_assoc()) {
-    $weekExpenses[] = $row;
-}
 $stmt->close();
 ?>
 
@@ -186,7 +178,7 @@ $stmt->close();
                     currencySymbol: 'Rs.'
                 },
                 hAxis: {
-                    title: '<?php echo ($sortOption == "date" ? "Day" : ($sortOption == "month" ? "Date" : ($sortOption == "year" ? "Month" : ""))); ?>'
+                    title: '<?php echo ($filterOption == "date" ? "Day" : ($filterOption == "month" ? "Date" : ($filterOption == "year" ? "Month" : ""))); ?>'
                 }
             };
 
@@ -198,16 +190,17 @@ $stmt->close();
         }
 
         function toggleDateInputs() {
-            const sortOption = document.getElementById('sortOptions').value;
-            document.getElementById('dateInput').style.display = sortOption === 'date' ? 'block' : 'none';
-            document.getElementById('weekInput').style.display = sortOption === 'week' ? 'block' : 'none';
-            document.getElementById('monthInput').style.display = sortOption === 'month' ? 'block' : 'none';
-            document.getElementById('yearInput').style.display = sortOption === 'year' ? 'block' : 'none';
+            const filterOption = document.getElementById('filterOptions').value;
+            document.getElementById('dateInput').style.display = filterOption === 'date' ? 'block' : 'none';
+            document.getElementById('weekInput').style.display = filterOption === 'week' ? 'block' : 'none';
+            document.getElementById('monthInput').style.display = filterOption === 'month' ? 'block' : 'none';
+            document.getElementById('yearInput').style.display = filterOption === 'year' ? 'block' : 'none';
         }
 
         function resetFilters() {
             document.getElementById('searchQuery').value = '';
             document.getElementById('sortOptions').value = '';
+            document.getElementById('filterOptions').value = '';
             document.getElementById('selectedDate').value = '';
             document.getElementById('selectedWeek').value = '';
             document.getElementById('selectedMonth').value = '';
@@ -227,7 +220,7 @@ $stmt->close();
         <nav>
             <ul>
                 <li><a href="Dashboard.html">Home</a></li>
-                <li><a href="Home.html">log Out</a></li>
+                <li><a href="Home.html">Log Out</a></li>
             </ul>
         </nav>
     </header>
@@ -237,12 +230,17 @@ $stmt->close();
             <h1>Expense History</h1>
             <form id="filterForm" action="expenseHistory.php" method="POST">
                 <input type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense" value="<?php echo htmlspecialchars($searchQuery); ?>">
-                <select name="sortOptions" id="sortOptions" onchange="toggleDateInputs()">
+                <select name="filterOptions" id="filterOptions" onchange="toggleDateInputs()">
+                    <option value="" disabled selected>Filter By</option>
+                    <option value="date" <?php if ($filterOption == 'date') echo 'selected'; ?>>Date</option>
+                    <option value="week" <?php if ($filterOption == 'week') echo 'selected'; ?>>Week</option>
+                    <option value="month" <?php if ($filterOption == 'month') echo 'selected'; ?>>Month</option>
+                    <option value="year" <?php if ($filterOption == 'year') echo 'selected'; ?>>Year</option>
+                </select>
+                <select name="sortOptions" id="sortOptions">
                     <option value="" disabled selected>Sort By</option>
+                    <option value="expense" <?php if ($sortOption == 'expense') echo 'selected'; ?>>Expense</option>
                     <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>Date</option>
-                    <option value="week" <?php if ($sortOption == 'week') echo 'selected'; ?>>Week</option>
-                    <option value="month" <?php if ($sortOption == 'month') echo 'selected'; ?>>Month</option>
-                    <option value="year" <?php if ($sortOption == 'year') echo 'selected'; ?>>Year</option>
                 </select>
                 <div id="dateInput" style="display:none;">
                     <input type="date" name="selectedDate" id="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>">
@@ -261,7 +259,7 @@ $stmt->close();
             </form>
             <h2>Total Expenses: Rs. <?php echo number_format($totalExpense, 2); ?></h2>
             <div id="chartContainer" class="chartContainer">
-                <div id="piechart" class="chart"></div>
+                <div id="piechart" class="chart" ></div>
                 <div id="columnchart" class="chart"></div>
             </div>
             <table>
