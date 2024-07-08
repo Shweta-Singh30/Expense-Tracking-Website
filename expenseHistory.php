@@ -17,25 +17,23 @@ $selectedWeek = isset($_POST['selectedWeek']) ? $_POST['selectedWeek'] : '';
 $selectedMonth = isset($_POST['selectedMonth']) ? $_POST['selectedMonth'] : '';
 $selectedYear = isset($_POST['selectedYear']) ? $_POST['selectedYear'] : '';
 
-// $selectedWeekStart = isset($_POST['selectedWeekStart']) ? $_POST['selectedWeekStart'] : '';
-// $selectedMonthStart = isset($_POST['selectedMonthStart']) ? $_POST['selectedMonthStart'] : '';
-
 $query = "SELECT * FROM addexpense WHERE id = ?";
 $params = [$username];
+$startOfWeek = date('Y-m-d', strtotime($selectedWeek));
 
 if ($sortOption == 'date' && !empty($selectedDate)) {
     $query .= " AND DATE(date) = ?";
     $params[] = $selectedDate;
 } elseif ($sortOption == 'week' && !empty($selectedWeek)) {
-    $startOfWeek = date('Y-m-d', strtotime($selectedWeek));
     $query .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK)";
-    $params[] = $selectedWeek;
-    $params[] = $selectedWeek;
-} elseif ($sortOption == 'month' && !empty($selectedMonthStart)) {
+    $params[] = $startOfWeek;
+    $params[] = $startOfWeek;
+} elseif ($sortOption == 'month' && !empty($selectedMonth)) {
+    $startOfMonth = date('Y-m-01', strtotime($selectedMonth));
     $query .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 MONTH)";
-    $params[] = $selectedMonth;
-    $params[] = $selectedMonth;
-}elseif ($sortOption == 'year' && !empty($selectedYear)) {
+    $params[] = $startOfMonth;
+    $params[] = $startOfMonth;
+} elseif ($sortOption == 'year' && !empty($selectedYear)) {
     $query .= " AND YEAR(date) = ?";
     $params[] = $selectedYear;
 }
@@ -69,23 +67,14 @@ $dailyData = [];
 $weeklyData = [];
 $monthlyData = [];
 
-
-// if ($sortOption == 'date' && !empty($selectedDate)) {
-//     $totalQuery .= " AND DATE(date) = ?";
-//     $totalParams[] = $selectedDate;
-// } elseif ($sortOption == 'week' && !empty($selectedWeekStart)) {
-//     $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK)";
-//     $totalParams[] = $selectedWeek;
-//     $totalParams[] = $selectedWeek;
-// } elseif ($sortOption == 'month' && !empty($selectedMonthStart)) {
-//     $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 MONTH)";
-//     $totalParams[] = $selectedMonth;
-//     $totalParams[] = $selectedMonth;
-// }
 if ($sortOption == 'date' && !empty($selectedDate)) {
-        $totalQuery .= " AND DATE(date) = ?";
-        $totalParams[] = $selectedDate;
-}elseif($sortOption == 'week' && !empty($selectedWeek)) {
+    $totalQuery .= " AND DATE(date) = ?";
+    $totalParams[] = $selectedDate;
+} elseif ($sortOption == 'week' && !empty($selectedWeek)) {
+    $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK)";
+    $totalParams[] = $startOfWeek;
+    $totalParams[] = $startOfWeek;
+
     for ($i = 0; $i < 7; $i++) {
         $day = date('l', strtotime($startOfWeek . " +$i days"));
         $labels[] = $day;
@@ -97,6 +86,10 @@ if ($sortOption == 'date' && !empty($selectedDate)) {
     }
     $data = array_values($dailyData);
 } elseif ($sortOption == 'month' && !empty($selectedMonth)) {
+    $totalQuery .= " AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 MONTH)";
+    $totalParams[] = $startOfMonth;
+    $totalParams[] = $startOfMonth;
+
     $daysInMonth = date('t', strtotime($selectedMonth));
     for ($i = 1; $i <= $daysInMonth; $i++) {
         $date = date('j', strtotime($selectedMonth . '-' . $i));
@@ -109,6 +102,9 @@ if ($sortOption == 'date' && !empty($selectedDate)) {
     }
     $data = array_values($dailyData);
 } elseif ($sortOption == 'year' && !empty($selectedYear)) {
+    $totalQuery .= " AND YEAR(date) = ?";
+    $totalParams[] = $selectedYear;
+
     $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     foreach ($months as $month) {
         $labels[] = $month;
@@ -120,8 +116,6 @@ if ($sortOption == 'date' && !empty($selectedDate)) {
     }
     $data = array_values($monthlyData);
 }
-
-
 
 if (!empty($searchQuery)) {
     $totalQuery .= " AND (expenseName LIKE ? OR description LIKE ?)";
@@ -140,11 +134,11 @@ $result = $stmt->get_result();
 $totalExpense = $result->fetch_assoc()['totalExpense'] ?? 0;
 $stmt->close();
 
-$weekExpensesQuery = "SELECT DATE(date) as date, SUM(price) as total FROM addexpense WHERE id = ? AND date >= ? GROUP BY DATE(date)";
-$weekExpensesParams = [$username, $selectedWeek];
+$weekExpensesQuery = "SELECT DATE(date) as date, SUM(price) as total FROM addexpense WHERE id = ? AND date >= ? AND date < DATE_ADD(?, INTERVAL 1 WEEK) GROUP BY DATE(date)";
+$weekExpensesParams = [$username, $startOfWeek, $startOfWeek];
 
 $stmt = $con->prepare($weekExpensesQuery);
-$stmt->bind_param('ss', $username, $selectedWeek);
+$stmt->bind_param('sss', $username, $startOfWeek, $startOfWeek);
 $stmt->execute();
 $result = $stmt->get_result();
 $weekExpenses = [];
@@ -167,191 +161,143 @@ $stmt->close();
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawCharts);
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
 
-      function drawCharts() {
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Expense'],
-          <?php
-          foreach ($labels as $index => $label) {
-              echo "['$label', $data[$index]],";
-          }
-          ?>
-        ]);
+        function drawCharts() {
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Expense'],
+                <?php
+                foreach ($labels as $index => $label) {
+                    echo "['$label', $data[$index]],";
+                }
+                ?>
+            ]);
 
-        var options = {
-          title: 'Expenses for Selected Period',
-          animation: {
-            startup: true,
-            duration: 1000,
-            easing: 'out'
-          },
-          vAxis: {
-            title: 'Expenses (Rs.)',
-            // format: 'currency',
-            currencySymbol: 'Rs.'
-          },
-          hAxis: {
-            title: '<?php echo ($sortOption == "date" ? "Day" : ($sortOption == "month" ? "Date" : "Month")); ?>'
-          }
-        };
-        
+            var options = {
+                title: 'Expenses for Selected Period',
+                animation: {
+                    startup: true,
+                    duration: 1000,
+                    easing: 'out'
+                },
+                vAxis: {
+                    title: 'Expenses (Rs.)',
+                    currencySymbol: 'Rs.'
+                },
+                hAxis: {
+                    title: '<?php echo ($sortOption == "date" ? "Day" : ($sortOption == "month" ? "Date" : ($sortOption == "year" ? "Month" : ""))); ?>'
+                }
+            };
 
-        var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
-        var columnChart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
+            var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var columnChart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
 
-        pieChart.draw(data, options);
-        columnChart.draw(data, options);
-      }
+            pieChart.draw(data, options);
+            columnChart.draw(data, options);
+        }
 
-      
+        function toggleDateInputs() {
+            const sortOption = document.getElementById('sortOptions').value;
+            document.getElementById('dateInput').style.display = sortOption === 'date' ? 'block' : 'none';
+            document.getElementById('weekInput').style.display = sortOption === 'week' ? 'block' : 'none';
+            document.getElementById('monthInput').style.display = sortOption === 'month' ? 'block' : 'none';
+            document.getElementById('yearInput').style.display = sortOption === 'year' ? 'block' : 'none';
+        }
 
-      function toggleDateInputs() {
-          const sortOption = document.getElementById('sortOptions').value;
-          document.getElementById('dateInput').style.display = sortOption === 'date' ? 'block' : 'none';
-          document.getElementById('weekInput').style.display = sortOption === 'week' ? 'block' : 'none';
-          document.getElementById('monthInput').style.display = sortOption === 'month' ? 'block' : 'none';
-          document.getElementById('yearInput').style.display = (sortOptions == 'year') ? 'block' : 'none';
-      }
+        function resetFilters() {
+            document.getElementById('searchQuery').value = '';
+            document.getElementById('sortOptions').value = '';
+            document.getElementById('selectedDate').value = '';
+            document.getElementById('selectedWeek').value = '';
+            document.getElementById('selectedMonth').value = '';
+            document.getElementById('selectedYear').value = '';
+            toggleDateInputs();
+            document.getElementById('filterForm').submit();
+        }
 
-      function resetFilters() {
-        document.getElementById('sortOptions').value = '';
-        document.getElementById('selectedWeek').value = '';
-        document.getElementById('selectedMonth').value = '';
-        document.getElementById('selectedYear').value = '';
-        toggleDateInputs();
-      }
-
-      window.onload = toggleDateInputs;
-
-           
-
+        window.onload = function() {
+            toggleDateInputs();
+        }
     </script>
 </head>
 
 <body>
     <header>
-        <nav class="navbar">
+        <nav>
             <ul>
-                <li class="ulLink"><a href="Dashboard.html" class="Home">Home</a></li>
-                <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
-                <li class="ulLink"><a href="#" id="graph"></a></li>
-                <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
-                <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
+                <li><a href="Dashboard.html">Home</a></li>
+                <li><a href="Home.html">log Out</a></li>
             </ul>
         </nav>
     </header>
 
-    <form id="filterForm" class="filterForm" method="POST" action="">
-        <input type="text" id="searchQuery" name="searchQuery" class="search-name" placeholder="Search by name or description" value="<?php echo htmlspecialchars($searchQuery); ?>">
-
-        <select id="sortOptions" name="sortOptions" class="select" onchange="toggleDateInputs()">
-            <option value="">Sort By</option>
-            <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>Date</option>
-            <option value="week" <?php if ($sortOption == 'week') echo 'selected'; ?>>Week</option>
-            <option value="month" <?php if ($sortOption == 'month') echo 'selected'; ?>>Month</option>
-            <option value="year" <?php if ($sortOption == 'year') echo 'selected'; ?>>Year</option>
-        </select>
-
-        <div id="dateInput" style="display:none;" class="sInp">
-            <label for="selectedDate">Choose Date:</label>
-            <input type="date" id="selectedDate" name="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>">
-        </div>
-
-        <div id="weekInput" style="display: none;" class="sInp">
-            <label for="selectedWeekStart">Choose Week Start Date:</label>
-            <input type="date" id="selectedWeek" name="selectedWeek" value="<?php echo htmlspecialchars($selectedWeekStart); ?>">
-        </div>
-
-        <div id="monthInput" style="display: none;" class="sInp">
-            <label for="selectedMonthStart">Choose Month:</label>
-            <input type="month" id="selectedMonth" name="selectedMonth" value="<?php echo htmlspecialchars($selectedMonthStart); ?>">
-        </div>
-
-        <div id="yearInput" style="display:none;" class="sInp">
-            <label for="selectedYear">Choose Year:</label>
-            <input type="number" id="selectedYear" name="selectedYear" min="2000" max="<?php echo date('Y'); ?>" value="<?php echo htmlspecialchars($selectedYear); ?>">
-        </div>
-
-        <div>
-            <button type="submit" name="apply" class="applyButton">Apply Changes</button>
-            <button type="button" class="resetButton" onclick="resetFilters()">Reset</button>
-            <!-- <a href="graph.php?sortOption=<?php echo $sortOption; ?>&selectedDate=<?php echo $selectedDate; ?>&selectedWeekStart=<?php echo $selectedWeekStart; ?>&selectedMonthStart=<?php echo $selectedMonthStart; ?>">See the graph</a> -->
-        </div>
-    </form>
-
-    <div id="chartsContainer" style="display:flex;justify-content:space-around;">
-        <div id="piechart" class="chart" style="width:600px;height:400px;"></div>
-        <div id="columnchart" class="chart" style="width:600px;height:400px;"></div>
-    </div>
-
-    <center>
-        <div class="createTable" width="100%">
-            <table class="searchable sortable">
+    <main>
+        <div class="container3">
+            <h1>Expense History</h1>
+            <form id="filterForm" action="expenseHistory.php" method="POST">
+                <input type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense" value="<?php echo htmlspecialchars($searchQuery); ?>">
+                <select name="sortOptions" id="sortOptions" onchange="toggleDateInputs()">
+                    <option value="" disabled selected>Sort By</option>
+                    <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>By Date</option>
+                    <option value="week" <?php if ($sortOption == 'week') echo 'selected'; ?>>By Week</option>
+                    <option value="month" <?php if ($sortOption == 'month') echo 'selected'; ?>>By Month</option>
+                    <option value="year" <?php if ($sortOption == 'year') echo 'selected'; ?>>By Year</option>
+                </select>
+                <div id="dateInput" style="display:none;">
+                    <input type="date" name="selectedDate" id="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>">
+                </div>
+                <div id="weekInput" style="display:none;">
+                    <input type="week" name="selectedWeek" id="selectedWeek" value="<?php echo htmlspecialchars($selectedWeek); ?>">
+                </div>
+                <div id="monthInput" style="display:none;">
+                    <input type="month" name="selectedMonth" id="selectedMonth" value="<?php echo htmlspecialchars($selectedMonth); ?>">
+                </div>
+                <div id="yearInput" style="display:none;">
+                    <input type="number" name="selectedYear" id="selectedYear" placeholder="YYYY" value="<?php echo htmlspecialchars($selectedYear); ?>">
+                </div>
+                <button type="submit">Apply</button>
+                <button type="button" onclick="resetFilters()">Reset</button>
+            </form>
+            <h2>Total Expenses: Rs. <?php echo number_format($totalExpense, 2); ?></h2>
+            <div id="chartContainer" class="chartContainer">
+                <div id="piechart" class="chart"></div>
+                <div id="columnchart" class="chart"></div>
+            </div>
+            <table>
                 <thead>
                     <tr>
-                        <td class="tHead">
-                            <h3>S.N.</h3>
-                        </td>
-                        <td class="tHead">
-                            <h3>Name</h3>
-                        </td>
-                        <td class="tHead amount">
-                            <h3>Price</h3>
-                        </td>
-                        <td class="tHead">
-                            <h3>Description</h3>
-                        </td>
-                        <td class="tHead">
-                            <h3>Created At</h3>
-                        </td>
+                        <th>S.N.</th>
+                        <th>Expense Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
-                <tbody id="expenseTable">
-                   
-                    <?php if (!empty($expenses)) : ?>
-                        <?php foreach ($expenses as $expense) : ?>
+                <tbody>
+                    <?php if (count($expenses) > 0) : ?>
+                        <?php foreach ($expenses as $index => $expense) : ?>
                             <tr>
-                                <td><?php echo $expense['S.N.']; ?></td>
-                                <td><?php echo $expense['expenseName']; ?></td>
-                                <td class="amount"><?php echo $expense['price']; ?></td>
-                                <td><?php echo $expense['description']; ?></td>
-                                <td><?php echo $expense['date']; ?></td>
+                                <td><?php echo htmlspecialchars($expense['S.N.']); ?></td>
+                                <td><?php echo htmlspecialchars($expense['expenseName']); ?></td>
+                                <td><?php echo htmlspecialchars($expense['description']); ?></td>
+                                <td><?php echo 'Rs. ' . number_format($expense['price'], 2); ?></td>
+                                <td><?php echo htmlspecialchars(date('d-m-Y', strtotime($expense['date']))); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="5">No expenses found!</td>
+                            <td colspan="5">No expenses found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
+    </main>
 
-        <div class="expenseTotals">
-            <h3 id="tExpense">Total Expenses: <?php echo htmlspecialchars($totalExpense); ?></h3>
-        </div>
-    </center>
-
-    <div id="currentWeekExpensesChart"></div>
-
-    <script>
-        function resetFilters() {
-            document.getElementById("searchQuery").value = '';
-            document.getElementById("sortOptions").value = '';
-            document.getElementById("selectedDate").value = '';
-            document.getElementById("selectedWeek").value = '';
-            document.getElementById("selectedMonth").value = '';
-            toggleDateInputs(); // Hide date inputs
-            document.getElementById("filterForm").submit();
-        }
-
-        // Initialize date inputs visibility on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            toggleDateInputs();
-        });
-    </script>
+    <footer>
+        <p>&copy; 2024 Expense Tracker. All Rights Reserved.</p>
+    </footer>
 </body>
 
 </html>
