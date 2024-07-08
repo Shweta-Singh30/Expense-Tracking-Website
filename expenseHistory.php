@@ -239,10 +239,10 @@ $stmt->close();
                 <input type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense" value="<?php echo htmlspecialchars($searchQuery); ?>">
                 <select name="sortOptions" id="sortOptions" onchange="toggleDateInputs()">
                     <option value="" disabled selected>Sort By</option>
-                    <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>By Date</option>
-                    <option value="week" <?php if ($sortOption == 'week') echo 'selected'; ?>>By Week</option>
-                    <option value="month" <?php if ($sortOption == 'month') echo 'selected'; ?>>By Month</option>
-                    <option value="year" <?php if ($sortOption == 'year') echo 'selected'; ?>>By Year</option>
+                    <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>Date</option>
+                    <option value="week" <?php if ($sortOption == 'week') echo 'selected'; ?>>Week</option>
+                    <option value="month" <?php if ($sortOption == 'month') echo 'selected'; ?>>Month</option>
+                    <option value="year" <?php if ($sortOption == 'year') echo 'selected'; ?>>Year</option>
                 </select>
                 <div id="dateInput" style="display:none;">
                     <input type="date" name="selectedDate" id="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>">
