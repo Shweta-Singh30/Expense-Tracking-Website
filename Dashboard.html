@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Dashboard</title>
+    <script src="Assets/tailwind.js"></script>
     <link rel="stylesheet" href="Assets/Style.css">
-    <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+    <!-- <style>
         .dImg {
             background-image: url("Assets/dashbrd.jpg");
             background-repeat: no-repeat;
@@ -48,22 +51,43 @@
             75% { transform: rotate(-10.5deg); }
             100% { transform: rotate(0deg); }
         }
-    </style>
+    </style> -->
 </head>
 
-<body>
-    <header>
-        <nav class="navbar">
+<body class="bg-[url('Assets/image/eIMG.jpg')] bg-cover bg-no-repeat  w-screen"  >
+    
+        <nav >
             <ul>
-                <li class="ulLink"><a href="Home.html" class="Home">Home</a></li>
-                <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
-                <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
-                <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
+                <li ><a href="Home.html">Home</a></li>
+                
+                <li ><button><a href="Home.html" >Logout</a></button></li>
             </ul>
         </nav>
-    </header>
+   
     <div class="dImg"> 
-    <div class="Expense">
+        <div>
+            <div class="text-[40px] font-extrabold mt-32">
+                <span class="bg-clip-text text-transparent  bg-gradient-to-r from-red-700 to-violet-500  pl-[90px] mb-1.5 hover:bg-gradient-to-tl from-red-700 to-violet-500">
+                    Track your spending with ease !
+                </span>
+              </div>
+            <!-- <h3  class="text-black text-3xl mt-32 pl-[90px] mb-1.5" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" ><b>Track your spending with ease</b></h3> -->
+            <h2 class="text-zinc-800 text-2xl pl-[96px] font-serif" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"> (Record your expense now)</h2>
+        </div>
+        <div class="pl-[100px] mt-24">
+        <div class=" border-2 border-black h-11 w-56 bg-purple-300">
+            <div class="w-10 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-[180px]" >
+                <i class="fa solid fa-chevron-right text-4xl text-slate-200 grid place-content-center hover:text-[38px]"></i>
+            </div>
+        </div>
+        <div class=" border-2 border-black h-11 w-56 mt-5 bg-purple-300">
+            <div class="w-10 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-[180px]" >
+                <i class="fa solid fa-chevron-right text-4xl text-slate-200 grid place-content-center hover:text-[38px]"></i>
+            </div>
+
+        </div>
+      </div>
+    <!-- <div class="Expense">
         <div class="addExpense zoom wiggle">
             <img class="eImg" src="Assets/Expenses.jpg" alt="">
             <h2 class="textExpense"><a href="addYourExpense.php" class="textExpense">Add Your Expenses</a></h2>
@@ -72,11 +96,11 @@
             <img class="eImg" src="Assets/expenseHistory.jpg" alt="">
             <h2 class="textExpense"><a href="expenseHistory.php" class="textExpense">Expense History</a></h2>
         </div>
-    </div>
+    </div> -->
 </div>
-    <footer>
+    <!-- <footer>
 
-    </footer>
+    </footer> -->
 
     <script>
         document.querySelectorAll('.wiggle').forEach(item => {
