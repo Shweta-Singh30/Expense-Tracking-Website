@@ -56,36 +56,43 @@
 
 <body class="bg-[url('Assets/image/eIMG.jpg')] bg-cover bg-no-repeat  w-screen"  >
     
-        <nav >
-            <ul>
-                <li ><a href="Home.html">Home</a></li>
-                
-                <li ><button><a href="Home.html" >Logout</a></button></li>
-            </ul>
-        </nav>
+    <nav class="flex justify-end">
+        <ul class="inline-flex">
+            <li class="m-3 text-white font-serif">
+                <a href="Home.html">Contact Us</a>
+            </li>
+            <li class="m-3 text-white font-serif">
+                <button>
+                    <a href="Home.html">Logout</a>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    
+    
    
     <div class="dImg"> 
         <div>
-            <div class="text-[40px] font-extrabold mt-32">
+            <div class="text-[40px] font-extrabold mt-40">
                 <span class="bg-clip-text text-transparent  bg-gradient-to-r from-red-700 to-violet-500  pl-[90px] mb-1.5 hover:bg-gradient-to-tl from-red-700 to-violet-500">
                     Track your spending with ease !
                 </span>
               </div>
             <!-- <h3  class="text-black text-3xl mt-32 pl-[90px] mb-1.5" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" ><b>Track your spending with ease</b></h3> -->
-            <h2 class="text-zinc-800 text-2xl pl-[96px] font-serif" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"> (Record your expense now)</h2>
+            <h2 class="bg-clip-text text-transparent bg-gradient-to-r from-rose-800 to-green-800  text-2xl pl-[96px] mt-2 font-serif font-extrabold" > (Record your expense now)</h2>
         </div>
-        <div class="pl-[100px] mt-24">
+        <div class="pl-[100px] mt-10">
             <div class="border-2 border-black h-11 w-56 bg-purple-300 flex items-center mb-5">
-                <a href="addYourExpense.php" class="grid place-content-center flex-grow">Add Your Expenses</a>
+                <div class="grid place-content-center flex-grow font-bold  bg-clip-text text-transparent  bg-gradient-to-r from-black to-red-700 hover:bg-gradient-to-tl from-black-700 to-white-500">Add Your Expenses</div>
                 <div class="w-10 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center">
-                    <i class="fa solid fa-chevron-right text-4xl text-slate-200 hover:text-[38px]"></i>
+                   <a href="addYourExpense.php" <i class="fa solid fa-chevron-right text-4xl text-slate-200 hover:text-[38px]"  ></i></a>
                 </div>
             </div>
             
             <div class="border-2 border-black h-11 w-56 bg-purple-300 flex items-center">
-                <a href="expenseHistory.php" class="grid place-content-center flex-grow">Expenses History</a>
+                <div class="grid place-content-center flex-grow font-bold  bg-clip-text text-transparent  bg-gradient-to-r from-black to-red-700 hover:bg-gradient-to-tl from-black-700 to-red-500">Expense History</div>
                 <div class="w-10 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center">
-                    <i class="fa solid fa-chevron-right text-4xl text-slate-200 hover:text-[38px]"></i>
+                   <a <i class="fa solid fa-chevron-right text-4xl text-slate-200 hover:text-[38px]" href="expenseHistory.php"></i></a>
                 </div>
             </div>  
       </div>
