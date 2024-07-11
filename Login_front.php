@@ -7,24 +7,30 @@
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Login Page</title>
     <link rel="stylesheet" href="Assets/Style.css">
+    <script src="Assets/tailwind.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
+    <!-- <style>
         body{
             background-image: url("Assets/login.jpg");
         }
-    </style>
+    </style> -->
 </head>
 <body>
-    <header>
-    <nav class="navbar">
-        <ul>
-            <li class="ulLink"><a href="Home.html" class="Home">Home</a></li>
-            <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
-            <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
-            <li class="ulLink"><button id="Logout"><a href="Register.php" class="Logout">Signup</a></button></li>
+    <header class="w-screen  ">
+    <nav class="bg-purple-950 w-full  h-14 flex justify-between items-center  lg:items-center  ">
+        <div class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-200 to-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
+        
+        <ul class="md:flex hidden font-semibold ">
+            <li class="mx-[10px] curser-pointer">Home</li>
+            <li class="mx-[10px] curser-pointer">Contact</li>
+            <li class="mx-[10px] curser-pointer">About Us</li>
+                
+
         </ul>
+       
+        <div class="hidden md:block px-4 py-2 mr-2 bg-green-500 text-white rounded font-bold curser-pointer">Signup</div>
     </nav>
-    <div id="lImg">
+
     </header>
     <div class="container1">
         <h2>Login form</h2>
