@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
             $_SESSION['email'] = $user['email'];
 
 
-            echo "<script>window.location.href = '../Dashboard.html';</script>";
+            echo "<script>window.location.href = '../Dashboard.php';</script>";
             exit();
         } else {
             echo "<script>alert('Incorrect password'); window.location.href = '../login_front.php';</script>";

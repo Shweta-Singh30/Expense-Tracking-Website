@@ -1,7 +1,9 @@
 <?php
-  require('Assets/Connection.php');
   session_start();
+  require('endPoint/Connection.php');
+  
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,37 +40,48 @@
     
     <div class="dImg"> 
 
-        <div>
-            <div id="welcome-message" class="text-black"></div>
-            <div class="text-[40px] font-extrabold mt-40">
+        <div id="welcome-container">
+            <div id="welcome-message" class="bg-clip-text text-transparent bg-gradient-to-r from-rose-900 to-green-900 text-5xl  pl-[90px] mt-28  font-bold"></div>
+
+            <div class="text-[40px] font-extrabold mt-4">
                 <span class="bg-clip-text text-transparent  bg-gradient-to-r from-red-700 to-violet-500  pl-[90px] mb-1.5 hover:bg-gradient-to-tl from-red-700 to-violet-500">
-                    Track your spending with ease !
+                    Track your spending with ease 
                 </span>
-              </div>
-            <!-- <h3  class="text-black text-3xl mt-32 pl-[90px] mb-1.5" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" ><b>Track your spending with ease</b></h3> -->
-            <h2 class="bg-clip-text text-transparent bg-gradient-to-r from-rose-800 to-green-800  text-2xl pl-[96px] mt-2 font-serif font-extrabold" > (Record your expense now)</h2>
+            </div>
+
+           
+            <h2 class="bg-clip-text text-transparent bg-gradient-to-r from-rose-800 to-green-800  text-2xl pl-[90px] mt-2 font-serif font-extrabold" > (Record your expense now)</h2>
         </div>
 
-        <div class="pl-[100px] mt-10 inline-flex">
-            <div class="border-2 border-purple-400 h-11 w-56 bg-purple-300 flex items-center rounded-full mr-8 shadow-lg">
+        <div class="pl-[100px] mt-6">
+
+            <div class="border-2 border-purple-400 h-11 w-56 bg-purple-300 flex items-center  mr-16 shadow-lg">
+
                 <div class="grid place-content-center flex-grow font-bold  bg-clip-text text-transparent  bg-gradient-to-r from-black to-red-700 hover:bg-gradient-to-tl from-black-700 to-red-500">Add Your Expenses</div>
-                <div class="w-12 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center rounded-r-full hover:w-14 rounded-l-lg">
+
+                <div class="w-12 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center  hover:w-14 ">
                    <a <i class="fa solid fa-chevron-right text-3xl text-slate-200 hover:text-[38px]" href="addYourExpense.php"></i></a>
                 </div>
+                
             </div> 
             
-            <div class="border-2 border-purple-400 h-11 w-56 bg-purple-300 flex items-center rounded-full shadow-2xl">
+            <div class="border-2 border-purple-400 h-11 w-56 bg-purple-300 flex items-center  shadow-2xl mt-6">
+                
                 <div class="grid place-content-center flex-grow font-bold  bg-clip-text text-transparent  bg-gradient-to-r from-black to-red-700 hover:bg-gradient-to-tl from-black-700 to-red-500">Expense History</div>
-                <div class="w-12 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center rounded-r-full hover:w-14 rounded-l-lg ">
+                
+                <div class="w-12 h-10 bg-gradient-to-r from-rose-600 to bg-purple-500 ml-auto flex items-center justify-center hover:w-14  ">
                    <a <i class="fa solid fa-chevron-right text-3xl text-slate-200 hover:text-[38px]" href="expenseHistory.php"></i></a>
                 </div>
+                
             </div>  
-      </div>
+      
+        </div>
    
 </div>
     
 <script>
-    const userName = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; ?>"; // Get the username from PHP session
+    // Get the username from PHP session and set the welcome message
+    const userName = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; ?>";
     document.getElementById("welcome-message").innerText = `Hello, ${userName}!`;
 </script>
     

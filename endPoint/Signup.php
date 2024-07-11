@@ -54,7 +54,7 @@ if (isset($_POST['register'])) {
   mysqli_stmt_bind_param($stmt, "sssss", $_POST['name'], $username, $email, $Password, $_POST['Contact_Number']);
 
   if (mysqli_stmt_execute($stmt)) {
-    echo "<script>alert('Registration Successful'); window.location.href='../Dashboard.html';</script>";
+    echo "<script>alert('Registration Successful'); window.location.href='../Dashboard.php';</script>";
   } else {
     error_log("Registration failed: " . mysqli_stmt_error($stmt));
     echo "<script>alert('Registration failed. Please try again.'); window.location.href='../Register.php';</script>";
