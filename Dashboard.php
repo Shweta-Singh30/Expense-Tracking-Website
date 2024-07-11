@@ -21,7 +21,8 @@
     
 </head>
 
-<body class="bg-[url('Assets/image/eIMG.jpg')] bg-cover bg-no-repeat  w-screen"  >
+<body class="bg-[url('Assets/image/eIMG.jpg')] object-fill bg-cover bg-no-repeat  h-screen "  >
+   
     
     <nav class="flex justify-end" >
         <ul class="inline-flex">
@@ -35,15 +36,25 @@
             </li>
         </ul>
     </nav>
+
+    <div class="w-full h-auto">
+        <img class=" bg-cover bg-no-repeat hidden md:block " ="Assets/image/eIMG.jpg" >
+            
+    
+        <div>
+            <img src="" alt="">
+
+        </div>
+    </div>
     
     
     
     <div class="dImg"> 
 
         <div id="welcome-container">
-            <div id="welcome-message" class="bg-clip-text text-transparent bg-gradient-to-r from-rose-900 to-green-900 text-5xl  pl-[90px] mt-28  font-bold"></div>
+            <div id="welcome-message" class="bg-clip-text text-transparent bg-gradient-to-r from-rose-900 to-green-900 text-5xl  pl-[90px] mt-28  font-bold mg:mt-28"></div>
 
-            <div class="text-[40px] font-extrabold mt-4">
+            <div class="text-[30px] font-extrabold mt-4 md:text-[40px] md:font-extrabold md:mt-4 lg:text-[40px] lg:font-extrabold lg:mt-4">
                 <span class="bg-clip-text text-transparent  bg-gradient-to-r from-red-700 to-violet-500  pl-[90px] mb-1.5 hover:bg-gradient-to-tl from-red-700 to-violet-500">
                     Track your spending with ease 
                 </span>
