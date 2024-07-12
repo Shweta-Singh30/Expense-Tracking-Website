@@ -114,86 +114,111 @@ $con->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Add Expense</title>
-    <link rel="stylesheet" href="Assets/Style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body>
-    
+<body class="bg-gray-300">
 <header>
-    <nav class="navbar">
-        <ul>
-            <li class="ulLink"><a href="Dashboard.html" class="Home">Home</a></li>
-            <li class="ulLink"><a href="#" id="Contact">Contact</a></li>
-            <li class="ulLink"><a href="#" id="aboutUs">About Us</a></li>
-            <li class="ulLink"><button id="Logout"><a href="Home.html" class="Logout">Logout</a></button></li>
-        </ul>
+    <nav class="bg-gray-800 text-white w-full">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="Assets/icon.png" alt="ExpenseTracker Logo" class="h-10 w-10 mr-2">
+                <h1 class="text-2xl font-bold">ExpenseTracker</h1>
+            </div>
+            <div class="flex space-x-4">
+                <a href="Dashboard.php" class="hover:text-gray-400">Home</a>
+                <a href="expenseHistory.php" class="hover:text-gray-400">ExpenseHistory</a>
+                <a href="profile.php" class="hover:text-gray-400">Profile</a>
+                <a href="Home.html" class="hover:text-gray-400">Logout</a>
+            </div>
+        </div>
     </nav>
 </header>
 
-<center>
-    <form action="addYourExpense.php" method="POST" class="eForm">
-        <div>
-            <div class="add">
-                <label for="expenseName">Expense Name</label>
-                <input type="text" id="expenseName" name="expenseName" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['expenseName'] : ''; ?>" required><br>
-            </div>
-            <div class="add1">
-                <label for="price" class="pr">Price</label>
-                <input type="number" id="price" name="price" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['price'] : ''; ?>" required><br>
-            </div>
-            <div class="add2">
-                <label for="description" class="drs">Description</label>
-                <textarea id="description" name="description"><?php echo isset($expense_to_edit) ? $expense_to_edit['description'] : ''; ?></textarea><br>
-            </div>
-            <div class="add3">
-                <label for="createdAt" class="date">Date</label>
-                <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['date'] : date('Y-m-d'); ?>" required><br>
-            </div>
+<main class="container mx-auto mt-10 px-4">
+    <div class=" rounded-lg shadow-lg shadow-slate-300 bg-gray-400 border-2 border-gray-500">
+        <div class="p-6">
+            <h2 class="text-2xl font-bold mb-6">Add or Edit Expense</h2>
+            <form action="addYourExpense.php" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="expenseName" class="block text-sm font-medium text-gray-700">Expense Name</label>
+                        <input type="text" id="expenseName" name="expenseName" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['expenseName'] : ''; ?>" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                        <input type="number" id="price" name="price" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['price'] : ''; ?>" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"><?php echo isset($expense_to_edit) ? $expense_to_edit['description'] : ''; ?></textarea>
+                    </div>
+                    <div>
+                        <label for="createdAt" class="block text-sm font-medium text-gray-700">Date</label>
+                        <input type="date" id="createdAt" name="createdAt" value="<?php echo isset($expense_to_edit) ? $expense_to_edit['date'] : date('Y-m-d'); ?>" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <?php if (isset($expense_to_edit)): ?>
+                        <input type="hidden" name="edit_id" value="<?php echo $expense_to_edit['S.N.']; ?>">
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 " name="update">Save</button>
+                    <?php else: ?>
+                        <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-green-700 " name="add">Add</button>
+                    <?php endif; ?>
+                </div>
+            </form>
         </div>
-        <div>
-            <?php if (isset($expense_to_edit)): ?>
-                <input type="hidden" name="edit_id" value="<?php echo $expense_to_edit['S.N.']; ?>">
-                <input type="submit" class="addButton" value="Save" name="update">
-            <?php else: ?>
-                <input type="submit" class="addButton" value="Add" name="add">
-            <?php endif; ?>
-        </div>
-    </form>
-</center>
-
-<center>
-    <div class="createTable" width="100%">
-        <table>
-            <thead>
-                <tr>
-                    <td class="tHead"><h3>S.N.</h3></td>
-                    <td class="tHead"><h3>Name</h3></td>
-                    <td class="tHead"><h3>Price</h3></td>
-                    <td class="tHead"><h3>Description</h3></td>
-                    <td class="tHead"><h3>Created At</h3></td>
-                    <td class="tHead" width="25%"><h3>Action</h3></td>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($expenses as $expense): ?>
-                    <tr>
-                        <td><?php echo $expense['S.N.']; ?></td>
-                        <td><?php echo $expense['expenseName']; ?></td>
-                        <td><?php echo $expense['price']; ?></td>
-                        <td><?php echo $expense['description']; ?></td>
-                        <td><?php echo $expense['date']; ?></td>
-                        <td>
-                            <a href="addYourExpense.php?edit=<?php echo $expense['S.N.']; ?>">Edit</a>
-                            <a href="addYourExpense.php?delete=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php if (empty($expenses)) : ?>
-            <p style="text-align: center;">No expenses found!</p>
-        <?php endif; ?>
     </div>
-</center>
+
+    <div class="mt-8 bg-white border-2 border-gray-500 rounded-lg shadow-lg mb-4 ">
+        <div class="p-6">
+            <h2 class="text-2xl font-bold mb-6 grid place-content-center font-serif font-bold">Expenses List</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.N.</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <?php foreach ($expenses as $index => $expense): ?>
+                            <tr class="<?php echo $index % 2 === 0 ? 'bg-gray-50' : 'bg-white'; ?>">
+                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['S.N.']; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['expenseName']; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['price']; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['description']; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['date']; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <a href="addYourExpense.php?edit=<?php echo $expense['S.N.']; ?>" class="text-blue-600 hover:underline mr-4">Edit</a>
+                                        <a href="addYourExpense.php?delete=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');" class="text-red-600 hover:underline">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if (empty($expenses)): ?>
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">No expenses found!</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>
+
+
+

@@ -17,6 +17,17 @@ $selectedDate = isset($_POST['selectedDate']) ? $_POST['selectedDate'] : '';
 $selectedWeek = isset($_POST['selectedWeek']) ? $_POST['selectedWeek'] : '';
 $selectedMonth = isset($_POST['selectedMonth']) ? $_POST['selectedMonth'] : '';
 $selectedYear = isset($_POST['selectedYear']) ? $_POST['selectedYear'] : '';
+$resetFlag = isset($_POST['resetFlag']) ? $_POST['resetFlag'] : '';
+
+if ($resetFlag == 'true') {
+    $sortOption = '';
+    $filterOption = '';
+    $searchQuery = '';
+    $selectedDate = '';
+    $selectedWeek = '';
+    $selectedMonth = '';
+    $selectedYear = '';
+}
 
 $query = "SELECT * FROM addexpense WHERE id = ?";
 $params = [$username];
@@ -138,6 +149,9 @@ $stmt->execute();
 $result = $stmt->get_result();
 $totalExpense = $result->fetch_assoc()['totalExpense'] ?? 0;
 $stmt->close();
+
+// Determine if filters or sorting are applied
+$filtersApplied = !empty($filterOption) || !empty($sortOption) || !empty($searchQuery);
 ?>
 
 <!DOCTYPE html>
@@ -155,6 +169,8 @@ $stmt->close();
     
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
+
+        <?php if ($filtersApplied): ?>
         google.charts.setOnLoadCallback(drawCharts);
 
         function drawCharts() {
@@ -189,9 +205,10 @@ $stmt->close();
             pieChart.draw(data, options);
             columnChart.draw(data, options);
         }
+        <?php endif; ?>
 
         function toggleDateInputs() {
-            const filterOption = document.getElementById('filterOptions').value;
+            var filterOption = document.getElementById('filterOptions').value;
             document.getElementById('dateInput').style.display = filterOption === 'date' ? 'block' : 'none';
             document.getElementById('weekInput').style.display = filterOption === 'week' ? 'block' : 'none';
             document.getElementById('monthInput').style.display = filterOption === 'month' ? 'block' : 'none';
@@ -206,127 +223,109 @@ $stmt->close();
             document.getElementById('selectedWeek').value = '';
             document.getElementById('selectedMonth').value = '';
             document.getElementById('selectedYear').value = '';
-            toggleDateInputs();
+            document.getElementById('resetFlag').value = 'true';
             document.getElementById('filterForm').submit();
-        }
-
-        window.onload = function() {
-            toggleDateInputs();
         }
     </script>
 </head>
 
-<body>
-<header class="w-full  h-auto">
-
-<nav class="bg-purple-950 w-full  h-[60px] md:h-[45px] flex justify-between items-center  lg:items-center  ">
-
-    <div class="bg-clip-text text-transparent bg-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
-
-    <ul class="md:flex hidden font-semibold ml-2 ">
-        <li class="mx-[10px] curser-pointer text-white">Home</li>
-        <li class="mx-[10px] curser-pointer text-white">Contact</li>
-        <li class="mx-[10px] curser-pointer text-white">About Us</li>
-    </ul>
-
-    <div class="hidden my-auto text-[15px] font-serif md:flex mr-2">
-                <button>
-                    <a href="Register.php" class="bg-rose-600 text-white px-[14px]  p-[5px] hover:text-[16px] hover:bg-pink-700 md:w-10 border-2 border-red-500 rounded-lg ">Signup</a>
-                </button>
-    </div>
-    
-
-    <div class="md:hidden m-2">
-        <a class="text-4xl" href="#">&#8801;</a>
-    </div>
-
-</nav>
-
-</header>
-    <!-- <header>
-        <nav>
-            <ul>
-                <li><a href="Dashboard.html">Home</a></li>
-                <li><a href="Home.html">Log Out</a></li>
-            </ul>
+<body class="p-6 flex flex-col justify-between h-screen bg-gray-200">
+    <header>
+        <nav class="flex justify-between items-center bg-gray-800 text-white p-4 rounded shadow-md">
+            <div class="flex items-center">
+                <img src="Assets/icon.png" alt="ExpenseTracker Logo" class="h-10 w-10 mr-2">
+                <h1 class="text-2xl font-bold">ExpenseTracker</h1>
+            </div>
+            <div>
+                <a href="Dashboard.php" class="hover:text-gray-400">Home</a>
+                <a href="addYourExpense.php" class="ml-4 hover:text-gray-400">Add Expense</a>
+                <a href="profile.php" class="ml-4 hover:text-gray-400">Profile</a>
+                <a href="Home.html" class="ml-4 hover:text-gray-400">Logout</a>
+            </div>
         </nav>
-    </header> -->
-
-    <main>
-        <div class="container3">
-
-            <div class="grid place-content-center">
-                <h1 class="text-4xl font-semibold font-serim">Expense History</h1>
+    </header>
+    <main class="my-6">
+        <h2 class="text-2xl font-bold mb-4">Expense History</h2>
+        <form method="post" class="mb-6" id="filterForm">
+            <div class="flex flex-wrap mb-4">
+                <div class="w-full md:w-1/3 px-2">
+                    <label for="searchQuery" class="block text-gray-700">Search</label>
+                    <input type="text" id="searchQuery" name="searchQuery" value="<?php echo htmlspecialchars($searchQuery); ?>" placeholder="Search by name or description" class="w-full p-2 border rounded">
+                </div>
+                <div class="w-full md:w-1/3 px-2">
+                    <label for="sortOptions" class="block text-gray-700">Sort by</label>
+                    <select id="sortOptions" name="sortOptions" class="w-full p-2 border rounded">
+                        <option value="">Date (default)</option>
+                        <option value="expense" <?php if ($sortOption == 'expense') echo 'selected'; ?>>Expense</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-1/3 px-2">
+                    <label for="filterOptions" class="block text-gray-700">Filter by</label>
+                    <select id="filterOptions" name="filterOptions" class="w-full p-2 border rounded" onchange="toggleDateInputs()">
+                        <option value="">None</option>
+                        <option value="date" <?php if ($filterOption == 'date') echo 'selected'; ?>>Date</option>
+                        <option value="week" <?php if ($filterOption == 'week') echo 'selected'; ?>>Week</option>
+                        <option value="month" <?php if ($filterOption == 'month') echo 'selected'; ?>>Month</option>
+                        <option value="year" <?php if ($filterOption == 'year') echo 'selected'; ?>>Year</option>
+                    </select>
+                </div>
             </div>
-
-            <form class="inline-flex flex items-center " id="filterForm" action="expenseHistory.php" method="POST">
-                
-                <input class="text-[13px] h-[30px] w-[370px] border-[1px] border-slate-500 m-5 rounded-full text-center bg-white" type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense by Discription or Expense Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
-                <select name="filterOptions" id="filterOptions" onchange="toggleDateInputs()">
-                    <option value="" disabled selected>Filter By</option>
-                    <option value="date" <?php if ($filterOption == 'date') echo 'selected'; ?>>Date</option>
-                    <option value="week" <?php if ($filterOption == 'week') echo 'selected'; ?>>Week</option>
-                    <option value="month" <?php if ($filterOption == 'month') echo 'selected'; ?>>Month</option>
-                    <option value="year" <?php if ($filterOption == 'year') echo 'selected'; ?>>Year</option>
-                </select>
-                <select name="sortOptions" id="sortOptions">
-                    <option value="" disabled selected>Sort By</option>
-                    <option value="expense" <?php if ($sortOption == 'expense') echo 'selected'; ?>>Expense</option>
-                    <option value="date" <?php if ($sortOption == 'date') echo 'selected'; ?>>Date</option>
-                </select>
-                <div id="dateInput" style="display:none;">
-                    <input type="date" name="selectedDate" id="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>">
+            <div class="flex flex-wrap mb-4">
+                <div id="dateInput" class="w-full md:w-1/3 px-2" style="display: <?php echo ($filterOption == 'date') ? 'block' : 'none'; ?>;">
+                    <label for="selectedDate" class="block text-gray-700">Select Date</label>
+                    <input type="date" id="selectedDate" name="selectedDate" value="<?php echo htmlspecialchars($selectedDate); ?>" class="w-full p-2 border rounded">
                 </div>
-                <div id="weekInput" style="display:none;">
-                    <input type="week" name="selectedWeek" id="selectedWeek" value="<?php echo htmlspecialchars($selectedWeek); ?>">
+                <div id="weekInput" class="w-full md:w-1/3 px-2" style="display: <?php echo ($filterOption == 'week') ? 'block' : 'none'; ?>;">
+                    <label for="selectedWeek" class="block text-gray-700">Select Week</label>
+                    <input type="week" id="selectedWeek" name="selectedWeek" value="<?php echo htmlspecialchars($selectedWeek); ?>" class="w-full p-2 border rounded">
                 </div>
-                <div id="monthInput" style="display:none;">
-                    <input type="month" name="selectedMonth" id="selectedMonth" value="<?php echo htmlspecialchars($selectedMonth); ?>">
+                <div id="monthInput" class="w-full md:w-1/3 px-2" style="display: <?php echo ($filterOption == 'month') ? 'block' : 'none'; ?>;">
+                    <label for="selectedMonth" class="block text-gray-700">Select Month</label>
+                    <input type="month" id="selectedMonth" name="selectedMonth" value="<?php echo htmlspecialchars($selectedMonth); ?>" class="w-full p-2 border rounded">
                 </div>
-                <div id="yearInput" style="display:none;">
-                    <input type="number" name="selectedYear" id="selectedYear" placeholder="YYYY" value="<?php echo htmlspecialchars($selectedYear); ?>">
+                <div id="yearInput" class="w-full md:w-1/3 px-2" style="display: <?php echo ($filterOption == 'year') ? 'block' : 'none'; ?>;">
+                    <label for="selectedYear" class="block text-gray-700">Select Year</label>
+                    <input type="number" id="selectedYear" name="selectedYear" value="<?php echo htmlspecialchars($selectedYear); ?>" min="2000" max="<?php echo date('Y'); ?>" placeholder="YYYY" class="w-full p-2 border rounded">
                 </div>
-                <button type="submit">Apply</button>
-                <button type="button" onclick="resetFilters()">Reset</button>
-            </form>
-            <h2>Total Expenses: Rs. <?php echo number_format($totalExpense, 2); ?></h2>
-            <div id="chartContainer" class="chartContainer">
-                <div id="piechart" class="chart" ></div>
-                <div id="columnchart" class="chart"></div>
             </div>
-            <table>
+            <input type="hidden" id="resetFlag" name="resetFlag" value="false">
+            <div class="flex items-center">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Apply</button>
+                <button type="button" onclick="resetFilters()" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Reset</button>
+            </div>
+        </form>
+        <?php if ($filtersApplied): ?>
+        <div class="flex justify-around mb-6 border-2 border-white shadow-lg shadow-slate-400">
+            <div id="piechart" class="w-1/2"></div>
+            <div id="columnchart" class="w-1/2"></div>
+        </div>
+        <?php endif; ?>
+        <div class="bg-white rounded shadow-md overflow-x-auto">
+            <table class="min-w-full bg-white  shadow-lg shadow-slate-400 ">
                 <thead>
                     <tr>
-                        <th>S.N.</th>
-                        <th>Expense Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Date</th>
+                        <th class="px-4 py-2 border">Date</th>
+                        <th class="px-4 py-2 border">Expense Name</th>
+                        <th class="px-4 py-2 border">Description</th>
+                        <th class="px-4 py-2 border">Price (Rs.)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($expenses) > 0) : ?>
-                        <?php foreach ($expenses as $index => $expense) : ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($expense['S.N.']); ?></td>
-                                <td><?php echo htmlspecialchars($expense['expenseName']); ?></td>
-                                <td><?php echo htmlspecialchars($expense['description']); ?></td>
-                                <td><?php echo 'Rs. ' . number_format($expense['price'], 2); ?></td>
-                                <td><?php echo htmlspecialchars(date('d-m-Y', strtotime($expense['date']))); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="5">No expenses found.</td>
-                        </tr>
-                    <?php endif; ?>
+                    <?php foreach ($expenses as $expense): ?>
+                    <tr>
+                        <td class="px-4 py-2 border"><?php echo htmlspecialchars($expense['date']); ?></td>
+                        <td class="px-4 py-2 border"><?php echo htmlspecialchars($expense['expenseName']); ?></td>
+                        <td class="px-4 py-2 border"><?php echo htmlspecialchars($expense['description']); ?></td>
+                        <td class="px-4 py-2 border"><?php echo htmlspecialchars($expense['price']); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+        <p class="mt-4">Total Expense: <span class="font-bold">Rs. <?php echo htmlspecialchars($totalExpense); ?></span></p>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Expense Tracker. All Rights Reserved.</p>
+    <footer class="text-center mt-6">
+        <p>&copy; <?php echo date("Y"); ?> ExpenseTracker. All rights reserved.</p>
     </footer>
 </body>
 

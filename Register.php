@@ -8,12 +8,13 @@
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Register</title>
     <link rel="stylesheet" href="Assets/Style.css">
+    <!-- <script src="Assets/tailwind.js"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        body{
+        /* body{
             background-image: url("Assets/login.jpg");
             
-        }
+        } */
     </style>
 </head>
 <body>

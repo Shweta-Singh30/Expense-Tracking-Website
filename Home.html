@@ -171,12 +171,13 @@
 Resources
     </style>
 </head>
-<body class="h-screen ">
-    <div class="bg-[url('Assets/exp.jpg')] lg:w-screen bg-cover bg-no-repeat  h-screen">
+<body class="bg-cover bg-center bg-no-repeat">
+    <div class="h-screen flex flex-col">
         <nav class="flex items-center justify-between w-screen bg-fuchsia-900 p-3 h-12xl md:16xl sm:16xl">
     
-            <div class="text-2xl font-serif text-white  ">
-                <b>Expense Tracker</b> 
+            <div class="flex items-center">
+                <img src="Assets/icon.png" alt="ExpenseTracker Logo" class="h-8 w-10 mr-2 ">
+                <h1 class="text-2xl font-bold text-white">ExpenseTracker</h1>
             </div>
 
             <div class="hidden md:flex">
@@ -198,8 +199,9 @@ Resources
 
         </nav>
 
-        <div id="homeImg" class="" >
+        <div id="homeImg" class="flex-1 bg-cover bg-no-repeat bg-center" style="background-image: url('Assets/exp.jpg');" >
             <div class=" h-screen w-full grid place-content-center border-transparent m-auro">
+                
                 <form class="w-[380px] h-[340px] sm:w-[580px] sm:h-[380px] grid place-content-center md:w-[700px] md:h-[380px] md:grid md:place-content-center  p-4">
                     <div id="welcome">
                     <h1 class="text-[30px] md:text-4xl  font-bold " id="welcome-message" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"></h1>
@@ -234,3 +236,4 @@ Resources
     </script>
 </body>
 </html>
+
