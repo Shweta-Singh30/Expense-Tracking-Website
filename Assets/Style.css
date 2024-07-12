@@ -387,11 +387,7 @@ img {
 }
 
 
-footer {
-   width: 100%;
-   height: 25px;
-   background-color: purple;
-}
+
 
 #hImg {
    background-image: url("Assets/exp.jpg");
