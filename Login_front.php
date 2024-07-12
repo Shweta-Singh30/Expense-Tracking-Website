@@ -51,11 +51,11 @@
                 <input type="password" class="text-name" placeholder="Password" name="Password">
             </div>
 
-            <div class="input-name bg-fuchsia-900">
+            <div class="input-name bg-fuchsia-900 border-2 border-fuchsia-900 rounded-full flex items-center justify-center p-[6px] hover:bg-purple-900 hover:rounded-none hover:text-[21px]">
+    <input type="submit" value="Login" class="text-white font-semibold text-[20px] hover:font-bold rounded-full cursor-pointer" name="login">
+    <a href="addYourExpense.php" class="hidden"></a>
+</div>
 
-                <input type="submit" value="Login" class="button" name="login">
-                <a href="addYourExpense.php"></a>
-            </div>
         </form>
         <div class="already_account">
             <h4>Have not an account?<a href="Register.php">Register</a></h4>
