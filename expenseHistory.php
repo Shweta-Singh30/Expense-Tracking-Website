@@ -148,6 +148,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Expense History</title>
+    <script src="Assets/tailwind.js"></script>
     <link rel="stylesheet" href="Assets/Style.css">
    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -216,20 +217,51 @@ $stmt->close();
 </head>
 
 <body>
-    <header>
+<header class="w-full  h-auto">
+
+<nav class="bg-purple-950 w-full  h-[60px] md:h-[45px] flex justify-between items-center  lg:items-center  ">
+
+    <div class="bg-clip-text text-transparent bg-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
+
+    <ul class="md:flex hidden font-semibold ml-2 ">
+        <li class="mx-[10px] curser-pointer text-white">Home</li>
+        <li class="mx-[10px] curser-pointer text-white">Contact</li>
+        <li class="mx-[10px] curser-pointer text-white">About Us</li>
+    </ul>
+
+    <div class="hidden my-auto text-[15px] font-serif md:flex mr-2">
+                <button>
+                    <a href="Register.php" class="bg-rose-600 text-white px-[14px]  p-[5px] hover:text-[16px] hover:bg-pink-700 md:w-10 border-2 border-red-500 rounded-lg ">Signup</a>
+                </button>
+    </div>
+    
+
+    <div class="md:hidden m-2">
+        <a class="text-4xl" href="#">&#8801;</a>
+    </div>
+
+</nav>
+
+</header>
+    <!-- <header>
         <nav>
             <ul>
                 <li><a href="Dashboard.html">Home</a></li>
                 <li><a href="Home.html">Log Out</a></li>
             </ul>
         </nav>
-    </header>
+    </header> -->
 
     <main>
         <div class="container3">
-            <h1>Expense History</h1>
-            <form id="filterForm" action="expenseHistory.php" method="POST">
-                <input type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense" value="<?php echo htmlspecialchars($searchQuery); ?>">
+
+            <div class="grid place-content-center">
+                <h1 class="text-4xl font-semibold font-serim">Expense History</h1>
+            </div>
+
+            <form class="inline-flex flex items-center " id="filterForm" action="expenseHistory.php" method="POST">
+                
+                <input class="text-[13px] h-[30px] w-[370px] border-[1px] border-slate-500 m-5 rounded-full text-center bg-white" type="text" name="searchQuery" id="searchQuery" placeholder="Search Expense by Discription or Expense Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
                 <select name="filterOptions" id="filterOptions" onchange="toggleDateInputs()">
                     <option value="" disabled selected>Filter By</option>
                     <option value="date" <?php if ($filterOption == 'date') echo 'selected'; ?>>Date</option>
