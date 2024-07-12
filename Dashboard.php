@@ -25,6 +25,7 @@
    
     
     <nav class="flex justify-end" >
+        
         <ul class="inline-flex">
             <li class="m-3 text-white font-serif">
                 <a href="Home.html">Contact Us</a>
@@ -35,17 +36,11 @@
                 </button>
             </li>
         </ul>
+       
     </nav>
-
-    <div class="w-full h-auto">
-        <img class=" bg-cover bg-no-repeat hidden md:block " ="Assets/image/eIMG.jpg" >
-            
     
-        <div>
-            <img src="" alt="">
 
-        </div>
-    </div>
+   
     
     
     
