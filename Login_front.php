@@ -38,7 +38,7 @@
     <!-- Navbar ends Here -->
 
     <div  class="grid place-content-center mx-auto h-screen md:w-[700px] ">
-    <div class="container6 bg-white w-[400px] sm:w-[600px] md:w-[800px] p-8 border-2 border-white shadow-lg shadow-slate-500 border-t-purple-900">
+    <div class="container6 bg-white w-[400px] sm:w-[600px] md:w-[800px] p-8 border-2 border-white shadow-lg shadow-slate-500 border-t-fuchsia-900">
         <h2 class="text-[30px] sm:text-[35px] md:text-[40px] flex justify-center font-serif font-semibold ">Login form</h2>
         <form method="POST" action="endPoint/login.php">
             <div class="input-name border-slate-300 border-[1px] shadow-md">
@@ -51,7 +51,8 @@
                 <input type="password" class="text-name" placeholder="Password" name="Password">
             </div>
 
-            <div class="input-name">
+            <div class="input-name bg-fuchsia-900">
+
                 <input type="submit" value="Login" class="button" name="login">
                 <a href="addYourExpense.php"></a>
             </div>
