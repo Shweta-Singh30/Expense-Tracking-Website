@@ -16,19 +16,24 @@
     <!-- Navbar Goes Here -->
     <header class="w-full  h-auto">
 
-        <nav class="bg-purple-950 w-full  h-14 flex justify-between items-center  lg:items-center  ">
+        <nav class="bg-purple-950 w-full  h-[60px] md:h-[45px] flex justify-between items-center  lg:items-center  ">
 
             <div class="bg-clip-text text-transparent bg-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
         
-            <ul class="md:flex hidden font-semibold ">
-                <li class="mx-[10px] curser-pointer">Home</li>
-                <li class="mx-[10px] curser-pointer">Contact</li>
-                <li class="mx-[10px] curser-pointer">About Us</li>
+            <ul class="md:flex hidden font-semibold ml-2 ">
+                <li class="mx-[10px] curser-pointer text-white">Home</li>
+                <li class="mx-[10px] curser-pointer text-white">Contact</li>
+                <li class="mx-[10px] curser-pointer text-white">About Us</li>
             </ul>
-       
-            <div class="hidden md:block px-4 py-2 mr-2 bg-green-500 text-white rounded font-bold curser-pointer">Signup</div>
 
-            <div class="md:hidden">
+            <div class="hidden my-auto text-[15px] font-serif md:flex mr-2">
+                        <button>
+                            <a href="Register.php" class="bg-rose-600 text-white px-[14px]  p-[5px] hover:text-[16px] hover:bg-pink-700 md:w-10 border-2 border-red-500 rounded-lg ">Signup</a>
+                        </button>
+            </div>
+            
+
+            <div class="md:hidden m-2">
                 <a class="text-4xl" href="#">&#8801;</a>
             </div>
 
@@ -42,13 +47,13 @@
         <h2 class="text-[30px] sm:text-[35px] md:text-[40px] flex justify-center font-serif font-semibold ">Login form</h2>
         <form method="POST" action="endPoint/login.php">
             <div class="input-name border-slate-300 border-[1px] shadow-md">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-user border-2 p-2"></i>
                 <input type="text" class="text-name" placeholder="Email/Username" name="email_username">
             </div>
 
-            <div class="input-name border-slate-300 border-[1px] shadow-md">
-                <i class="fa fa-lock lock"></i>
-                <input type="password" class="text-name" placeholder="Password" name="Password">
+            <div class="input-name border-slate-300 border-[1px] shadow-md outline-none">
+                <i class="fa fa-lock lock border-2 p-[8px]"></i>
+                <input type="password" class="text-name outline-none" placeholder="Password" name="Password">
             </div>
 
             <div class="input-name bg-fuchsia-900 border-2 border-fuchsia-900 rounded-full flex items-center justify-center p-[6px] hover:bg-purple-900 hover:rounded-none hover:text-[21px]">
@@ -58,7 +63,7 @@
 
         </form>
         <div class="already_account">
-            <h4>Have not an account?<a href="Register.php">Register</a></h4>
+            <h4 class="text-[15px] ">Have not an account?<a href="Register.php" class="font-semibold">Register</a></h4>
         </div>
     </div>
     </div>

@@ -171,48 +171,49 @@
 Resources
     </style>
 </head>
-<body class="bg-[url('Assets/exp.jpg')]  bg-cover bg-no-repeat  h-screen ">
-    <nav class="flex items-center justify-between w-screen bg-fuchsia-900 p-3 h-12xl md:16xl sm:16xl">
+<body class="h-screen ">
+    <div class="bg-[url('Assets/exp.jpg')] lg:w-screen bg-cover bg-no-repeat  h-screen">
+        <nav class="flex items-center justify-between w-screen bg-fuchsia-900 p-3 h-12xl md:16xl sm:16xl">
     
-        <div class="text-2xl font-serif text-white  ">
-            <b>Expense Tracker</b> 
-        </div>
+            <div class="text-2xl font-serif text-white  ">
+                <b>Expense Tracker</b> 
+            </div>
 
-        <div class="hidden md:flex">
-            <ul class="inline-flex">
-                <li class="m-3 text-white font-serif mx-10">
-                    <a href="#">Contact Us</a>
-                </li>
-                <li class="m-3 text-white text-[15px] font-serif ">
-                    <button>
-                        <a href="Register.php" class="bg-rose-600 px-[15px]  p-[5px] hover:text-[17px] hover:bg-pink-700 md:w-10 border-2 border-red-500 rounded-lg tex">Signup</a>
-                    </button>
-                </li>
-            </ul>
-        </div>
+            <div class="hidden md:flex">
+                <ul class="inline-flex">
+                    <li class="mt-2 text-white font-serif mx-10">
+                        <a href="#">Contact Us</a>
+                    </li>
+                    <li class=" mt-2 text-[15px] font-serif ">
+                        <button>
+                            <a href="Register.php" class="bg-rose-600 px-[14px]  p-[5px] hover:text-[16px] hover:bg-pink-700 md:w-10 border-2 border-red-500 rounded-lg ">Signup</a>
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="md:hidden">
-            <a href="#" class="font-bold text-4xl">&#8801;</a>
-        </div>
+            <div class="md:hidden">
+                <a href="#" class="font-bold text-4xl">&#8801;</a>
+            </div>
 
-    </nav>
+        </nav>
 
-    <div id="homeImg" class="" >
-    <div class=" h-screen w-full grid place-content-center border-transparent m-auro">
-        <form class="w-[380px] h-[340px] sm:w-[580px] sm:h-[380px] grid place-content-center md:w-[700px] md:h-[380px] md:grid md:place-content-center  p-4">
-            <div id="welcome">
-                <h1 class="text-[30px] md:text-4xl  font-bold " id="welcome-message" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"></h1>
+        <div id="homeImg" class="" >
+            <div class=" h-screen w-full grid place-content-center border-transparent m-auro">
+                <form class="w-[380px] h-[340px] sm:w-[580px] sm:h-[380px] grid place-content-center md:w-[700px] md:h-[380px] md:grid md:place-content-center  p-4">
+                    <div id="welcome">
+                    <h1 class="text-[30px] md:text-4xl  font-bold " id="welcome-message" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"></h1>
                 
-            </div>
-                <h1 class="md:text-[30px] text-[25px] font-bold opacity-90 pl-12 mt-4" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(Your Personal Finance Manager)</h1>
-            <div class="wrap w-[300px] mx-auto sm:w-[500px] lg:w-[620px] lg:mx-auto sm:mx-auto ">
-                    <button class="button"><a href="Login_front.php" style="text-decoration: none; color: white;">Login</a>
-            </div>
-        </form> 
+                    </div>
+                    <h1 class="md:text-[30px] text-[25px] font-bold opacity-90 pl-12 mt-4" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(Your Personal Finance Manager)</h1>
+                    <div class="wrap w-[300px] mx-auto sm:w-[500px] lg:w-[620px] lg:mx-auto sm:mx-auto ">
+                        <button class="button"><a href="Login_front.php" style="text-decoration: none; color: white;">Login</a>
+                    </div>
+                </form> 
+             </div>
+        </div>
     </div>
-</div>
-
-    <footer class="bg-fuchsia-900 h-8 w-full"></footer>
+    <footer class="bg-fuchsia-900  h-8 w-full flex-column-reverse"></footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
