@@ -11,14 +11,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    
 </head>
-<body>
+<body class="bg-gradient-to-br from-cyan-100 to-cyan-200">
 
     <!-- Navbar Goes Here -->
     <header class="w-full  h-auto">
 
         <nav class="bg-purple-950 w-full  h-14 flex justify-between items-center  lg:items-center  ">
 
-            <div class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-200 to-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
+            <div class="bg-clip-text text-transparent bg-white   ml-2 font-serif font-extrabold  text-2xl">Expense Tracker</div>
         
             <ul class="md:flex hidden font-semibold ">
                 <li class="mx-[10px] curser-pointer">Home</li>
@@ -37,8 +37,8 @@
     </header>
     <!-- Navbar ends Here -->
 
-    <div class="container1">
-        <h2>Login form</h2>
+    <div class="container1 bg-white md:w-[700px] grid justify-content-center">
+        <h2 class="text-4xl font-serif font-semibold ">Login form</h2>
         <form method="POST" action="endPoint/login.php">
             <div class="input-name">
                 <i class="fa fa-user"></i>
