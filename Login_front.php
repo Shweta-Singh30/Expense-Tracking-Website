@@ -37,15 +37,16 @@
     </header>
     <!-- Navbar ends Here -->
 
-    <div class="container1 bg-white md:w-[700px] grid justify-content-center">
-        <h2 class="text-4xl font-serif font-semibold ">Login form</h2>
+    <div  class="grid place-content-center mx-auto h-screen md:w-[700px] ">
+    <div class="container6 bg-white w-[400px] sm:w-[600px] md:w-[800px] p-8 border-2 border-white shadow-lg shadow-slate-500 border-t-purple-900">
+        <h2 class="text-[30px] sm:text-[35px] md:text-[40px] flex justify-center font-serif font-semibold ">Login form</h2>
         <form method="POST" action="endPoint/login.php">
-            <div class="input-name">
+            <div class="input-name border-slate-300 border-[1px] shadow-md">
                 <i class="fa fa-user"></i>
                 <input type="text" class="text-name" placeholder="Email/Username" name="email_username">
             </div>
 
-            <div class="input-name">
+            <div class="input-name border-slate-300 border-[1px] shadow-md">
                 <i class="fa fa-lock lock"></i>
                 <input type="password" class="text-name" placeholder="Password" name="Password">
             </div>
@@ -60,6 +61,7 @@
         </div>
     </div>
     </div>
+    
     <footer></footer>
 </body>
 </html>
