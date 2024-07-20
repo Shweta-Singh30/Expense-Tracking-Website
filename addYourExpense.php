@@ -222,3 +222,20 @@ $con->close();
 
 
 
+<!-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const welcomeMessage = "Welcome to Expense Tracker";
+            let index = 0;
+            const speed = 130; // typing speed in milliseconds
+
+            function typeWriter() {
+                if (index < welcomeMessage.length) {
+                    document.getElementById("welcome-message").textContent += welcomeMessage.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+
+            typeWriter();
+        });
+    </script> -->

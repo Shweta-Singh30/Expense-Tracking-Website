@@ -7,9 +7,10 @@
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Expense Tracker</title>
     <script src="Assets/tailwind.js"></script>
-    <link rel="stylesheet" href="Assets/Style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- <link rel="stylesheet" href="Assets/Style.css"> -->
 
-    <style> 
+    <!-- <style> 
          body{
         overflow-y:hidden ;
         height:1024px;
@@ -169,11 +170,11 @@
 
 
 Resources
-    </style>
+    </style> -->
 </head>
-<body class="bg-cover bg-center bg-no-repeat">
-    <div class="h-screen flex flex-col">
-        <nav class="flex items-center justify-between w-screen bg-fuchsia-900 p-3 h-12xl md:16xl sm:16xl">
+<body class="bg-slate-100 w-screen">
+    <div class="">
+        <nav class="absolute bg-gradient-to-r from-cyan-500 to-cyan-600 z-20 flex items-center justify-between w-full   h-[70px] md:h-[50px] sm:h-[50px] absolute top-0">
     
             <div class="flex items-center">
                 <img src="Assets/icon.png" alt="ExpenseTracker Logo" class="h-8 w-10 mr-2 ">
@@ -198,24 +199,132 @@ Resources
             </div>
 
         </nav>
+    </div> 
+        <div class="">
+            <div class="">
 
-        <div id="homeImg" class="flex-1 bg-cover bg-no-repeat bg-center" style="background-image: url('Assets/exp.jpg');" >
-            <div class=" h-screen w-full grid place-content-center border-transparent m-auro">
                 
-                <form class="w-[380px] h-[340px] sm:w-[580px] sm:h-[380px] grid place-content-center md:w-[700px] md:h-[380px] md:grid md:place-content-center  p-4">
-                    <div id="welcome">
-                    <h1 class="text-[30px] md:text-4xl  font-bold " id="welcome-message" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"></h1>
+                <img src="Assets/image/eIMG.jpg" alt="" class="object-fill saturate-150 brightness-90 h-[650px] sm:h-[450px] md:h-[500px] w-full  absolute top-[28px]   ">
                 
-                    </div>
-                    <h1 class="md:text-[30px] text-[25px] font-bold opacity-90 pl-12 mt-4" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(Your Personal Finance Manager)</h1>
-                    <div class="wrap w-[300px] mx-auto sm:w-[500px] lg:w-[620px] lg:mx-auto sm:mx-auto ">
-                        <button class="button"><a href="Login_front.php" style="text-decoration: none; color: white;">Login</a>
-                    </div>
-                </form> 
-             </div>
+            </div>
+            <div class="bg-transperent pt-[3em] md:pl-[1em] sm:ml-4 md:pt-12 md:pl-6  absolute   top-[3em] md:top-[5em]  place-content-center grid w-[55vw] ">
+                <div class="w-60 sm:w-96 md:mb-4  mt-2vw ml-2vw md:w-[700px] text-[30px] md:text-[42px] font-bold text-black">
+                    Effortlessly Track Your Expenses Year-Round!
+                
+                </div>
+
+           
+                <div class="w-44 sm:w-80  text-justify  md:w-[550px] font-semibold ">
+                    Welcome to Expense Tracker !Your Personal Finance Manager Effortlessly manage your finances by tracking daily, weekly, monthly, and yearly expenses. Take control of your financial future with our simple and intuitive platform. Start today with ExpenseTracker!
+                 </div>
+                <div class="bg-gradient-to-r from-cyan-300 to-cyan-800 mt-6 w-24 md:w-32 text-white hover:font-bold hover:bg-cyan-900 grid place-content-center border-2 border-cyan-600 p-1 shadow-lg shadow-gray-600">
+                     Login
+                </div>
+            </div>
         </div>
+
+    <div class="relative top-[700px] mb-[210px] sm:top-[530px] sm:mb-[20px] md:top-[580px] md:flex md:justify-evenly sm:flex sm:justify-evenly grid place-content-center my-[40px] md:my-[60px]">
+    
+        <div  class="flex bg-white mb-4 bg-zinc-100  border-2  border-white  shadow-gray-400 shadow-2xl  w-[90vw] sm:w-[30vw]  h-32">
+        
+            <div class="material-symbols-outlined text-[80px] p-2 md:p-4 bg-gradient-to-r from-cyan-400 to-cyan-700  text-white grid place-content-center">
+                add_task
+            </div>
+
+            <div class="grid place-content-center  text-[30px] md:text-[28px] sm:text-[20px] text-center font-bold ">
+               Effortlessly Add Expenses
+            </div>
+    
+        </div>
+
+        <div class="flex bg-white mb-4 bg-zinc-100  border-2 border-white   shadow-gray-400 shadow-2xl  w-[90vw] sm:w-[30vw] h-32">
+            <div class="material-symbols-outlined text-white sm:p-2 bg-gradient-to-r from-cyan-400 to-cyan-800 text-[80px] grid place-content-center p-4 md:p-4">
+            update
+            </div>
+            <div class="grid place-content-center  md:text-[28px] sm:text-[20px] text-[30px] text-center font-bold ">
+                Update Expense Anytime
+            </div>
+            
+        </div>
+    
+        <div class="flex bg-white   border-2 border-white  shadow-gray-400 shadow-2xl  w-[90vw] sm:w-[30vw] h-32">            
+            <span class="material-symbols-outlined md:p-4 sm:p-2 p-4 bg-gradient-to-r from-cyan-400 to-cyan-900 text-white text-[80px] grid place-content-center">
+                monitoring
+            </span>
+            <div class="grid place-content-center bg-zinc-100 md:text-[28px] text-[30px] sm:text-[20px] text-center md:pl-4 font-bold ">
+                Track  Easily and Effectively
+            </div>
+
+
+        </div>
+    
     </div>
-    <footer class="bg-fuchsia-900  h-8 w-full flex-column-reverse"></footer>
+    
+    <div class=" ">
+        <div class=" w-full h-[580px] md:h-[630px] top-[700px]  ">
+            <div class="  py-12  grid place-content-center md:place-content-start sm:place-content-center ">
+            <div class="">
+                <img src="Assets/image/e10.jpg" alt="" class="relative top-[600px] shadow-sm shadow-gray-600 object-fill md:top-[670px] h-[300px] md:h-[340px] rounded-b-full rounded-tr-full ml-24 md:ml-24 z-10 ">
+        
+
+            </div>
+            <div class="">
+                <img src="Assets/image/gExp.jpg" alt="" class="relative top-[470px]  z-40  md:h-[150px] h-[130px] md:top-[520px] object-fill  rounded-b-full  rounded-tl-full shadow-sm shadow-black ml-[40px] md:ml-8 ">
+            </div>
+            <div class="material-symbols-outlined relative top-[160px] w-[57px] md:w-[70px] md:top-[150px] ml-20 rounded-sm shadow-sm shadow-black text-[40px] p-2 md:text-6xl bg-gradient-to-r from-cyan-400 to-cyan-800 text-white z-20">
+                pie_chart
+            </div>
+            <div class="">
+            <img src="Assets/image/e12.jpeg" alt="" class="relative  top-[350px] h-[60px] md:h-[80px] w-[25vw] md:w-[200px] ml-[280px]  rounded-tr-3xl rounded-bl-3xl shadow-sm shadow-black border-[1px] border-cyan-700 z-20">
+            </div>
+            <div>
+            <img src="Assets/image/e13.png" alt="" class=" relative   top-[25px] md:top-[10px] h-[200px] md:h-[220px] w-[33vw] sm:w-[180px] md:w-[180px] ml-[260px] md:ml-[300px]   rounded-bl-3xl   opacity-40 bg-black ">
+            </div>
+            </div>
+        </div>  
+        <div class="bg-zinc-200 h-[800px] md:h-[500px] w-full">
+
+        
+         
+        <div class="w-[90vw]  md:w-[63vw] ml-8 md:ml-[36vw] relative top-[390px] md:top-[95px]  ">
+             <div class="text-[33px]  font-bold md:text-4xl mb-2  md:mb-4">
+                 Visualize Your Spending with Dynamic Graphs
+             </div>
+             <div class="md:my-2 my-2 text-justify ">
+                
+                <span>
+                    Effortlessly keep track of your expenses with our interactive graphing tools. Whether you're analyzing your spending by day, week, month, or year, our dynamic pie and column charts provide clear, insightful visuals to help you manage your finances effectively. Make informed decisions and achieve your financial goals with ease.
+                </span>       
+                    
+            </div>
+            <div class="font-bold my-4 md:my-4 ">
+                <span class="material-symbols-outlined  align-top bg-gradient-to-r from-cyan-400 to-cyan-800 rounded-full text-white">
+                     check_circle
+                </span> 
+                Discover patterns in your spending habits.
+            </div>
+            <div class="font-bold mb-4 ">
+                <span class="material-symbols-outlined align-top bg-gradient-to-r from-cyan-400 to-cyan-800 rounded-full text-white">
+                    check_circle
+               </span>
+                Make smarter financial choices.
+            </div>
+            <div class="font-bold  ">
+                <span class="material-symbols-outlined bg-gradient-to-r from-cyan-400 to-cyan-800 rounded-full text-white  align-top ">
+                    check_circle
+                </span>
+                Stay on top of your budget effortlessly!
+            </div>
+        </div>
+        </div>
+    </div> 
+
+    
+   
+
+        <footer class="h-[40px] bg-gradient-to-r from-cyan-400 to-cyan-800 w-full">
+
+        </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

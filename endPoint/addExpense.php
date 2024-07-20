@@ -1,17 +1,17 @@
 <?php
 require("Connection.php");
 
-// Initialize variables
+
 $expenseName = '';
 $price = '';
 $description = '';
 $createdAt = date('Y-m-d');
-$id = 1; // Replace with the actual logged in user's ID
+$id = 1; 
 
-// Handle form submission
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['add'])) {
-        // Insert new expense
+       
         $expenseName = $_POST['expenseName'];
         $price = $_POST['price'];
         $description = $_POST['description'];
@@ -21,13 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 VALUES ('$expenseName', '$price', '$description', '$createdAt', '$id')";
 
         if ($conn->query($sql) === TRUE) {
-            header("Location: addExpense.php"); // Redirect after successful insertion
-            exit();
+            header("Location: addExpense.php"); 
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     } elseif (isset($_POST['update'])) {
-        // Update existing expense
+      
         $edit_id = $_POST['edit_id'];
         $expenseName = $_POST['expenseName'];
         $price = $_POST['price'];
@@ -39,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 WHERE SN='$edit_id'";
 
         if ($conn->query($sql) === TRUE) {
-            header("Location: addExpense.php"); // Redirect after successful update
+            header("Location: addExpense.php"); 
             exit();
         } else {
             echo "Error updating record: " . $conn->error;
@@ -47,21 +46,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Delete expense
+
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
 
     $sql = "DELETE FROM addexpense WHERE SN='$delete_id'";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: addExpense.php"); // Redirect after successful delete
+        header("Location: addExpense.php"); 
         exit();
     } else {
-        echo "Error deleting record: " . $conn->error;
+        echo "Error deleting record: " . $con->error;
     }
 }
 
-// Fetch expenses data for display
+
 $sql = "SELECT * FROM addexpense WHERE id='$id'";
 $result = $conn->query($sql);
 

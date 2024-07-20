@@ -13,7 +13,7 @@
 </head>
 <body class="bg-gradient-to-br from-cyan-100 to-cyan-200">
 
-    <!-- Navbar Goes Here -->
+   
     <header class="w-full  h-auto">
 
         <nav class="bg-purple-950 w-full  h-[60px] md:h-[45px] flex justify-between items-center  lg:items-center  ">
@@ -40,7 +40,7 @@
         </nav>
 
     </header>
-    <!-- Navbar ends Here -->
+    
 
     <div  class="grid place-content-center mx-auto h-screen md:w-[700px] ">
     <div class="container6 bg-white w-[400px] sm:w-[600px] md:w-[800px] p-8 border-2 border-white shadow-lg shadow-slate-500 border-t-fuchsia-900">

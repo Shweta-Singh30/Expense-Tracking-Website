@@ -86,7 +86,7 @@
 </div>
     
 <script>
-    // Get the username from PHP session and set the welcome message
+    
     const userName = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; ?>";
     document.getElementById("welcome-message").innerText = `Hello, ${userName}!`;
 </script>

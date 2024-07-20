@@ -65,7 +65,7 @@ if ($sortOption == 'expense') {
 
 $stmt = $con->prepare($query);
 
-// Dynamically bind parameters based on number of conditions
+
 $types = str_repeat('s', count($params));
 $stmt->bind_param($types, ...$params);
 
