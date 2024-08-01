@@ -2,7 +2,7 @@
 session_start();
 require('endPoint/Connection.php');
 
-// Check if user is logged in
+
 if (!isset($_SESSION['username'])) {
     header('Location: Home.html');
     exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Get the next sequence number
+
 $query = "SELECT MAX(`S.N.`) as max_sn FROM addexpense WHERE id = ?";
 $stmt = $con->prepare($query);
 $stmt->bind_param("s", $username);
@@ -20,7 +20,7 @@ $row = $result->fetch_assoc();
 $next_sn = $row['max_sn'] + 1;
 $stmt->close();
 
-// Add expense
+
 if (isset($_POST['add'])) {
     $expenseName = $_POST['expenseName'];
     $price = $_POST['price'];
@@ -41,7 +41,6 @@ if (isset($_POST['add'])) {
     $stmt->close();
 }
 
-// Update expense
 if (isset($_POST['update'])) {
     $expenseName = $_POST['expenseName'];
     $price = $_POST['price'];
@@ -63,7 +62,7 @@ if (isset($_POST['update'])) {
     $stmt->close();
 }
 
-// Delete expense
+
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
 
@@ -81,7 +80,7 @@ if (isset($_GET['delete'])) {
     $stmt->close();
 }
 
-// Fetch expense to edit
+
 $expense_to_edit = null;
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
@@ -95,7 +94,7 @@ if (isset($_GET['edit'])) {
     $stmt->close();
 }
 
-// Fetch expenses
+
 $query = "SELECT * FROM addexpense WHERE id = ?";
 $stmt = $con->prepare($query);
 $stmt->bind_param("s", $username);
@@ -174,7 +173,7 @@ $con->close();
         </div>
     </div>
 
-    <div class="mt-8 bg-white border-2 border-gray-500 rounded-lg shadow-lg mb-4 ">
+    <!-- <div class="mt-8 bg-white border-2 border-gray-500 rounded-lg shadow-lg mb-4 ">
         <div class="p-6">
             <h2 class="text-2xl font-bold mb-6 grid place-content-center font-serif font-bold">Expenses List</h2>
             <div class="overflow-x-auto">
@@ -214,7 +213,7 @@ $con->close();
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 </main>
 
 </body>

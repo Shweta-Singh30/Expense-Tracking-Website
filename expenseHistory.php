@@ -2,7 +2,7 @@
 session_start();
 require('endPoint/Connection.php');
 
-// Check if user is logged in
+
 if (!isset($_SESSION['username'])) {
     header('Location: Home.html');
     exit();
@@ -141,7 +141,7 @@ if (!empty($searchQuery)) {
 
 $stmt = $con->prepare($totalQuery);
 
-// Dynamically bind parameters based on number of conditions
+
 $types = str_repeat('s', count($totalParams));
 $stmt->bind_param($types, ...$totalParams);
 
@@ -150,7 +150,6 @@ $result = $stmt->get_result();
 $totalExpense = $result->fetch_assoc()['totalExpense'] ?? 0;
 $stmt->close();
 
-// Determine if filters or sorting are applied
 $filtersApplied = !empty($filterOption) || !empty($sortOption) || !empty($searchQuery);
 ?>
 
@@ -330,3 +329,5 @@ $filtersApplied = !empty($filterOption) || !empty($sortOption) || !empty($search
 </body>
 
 </html>
+
+
