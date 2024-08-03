@@ -2,14 +2,12 @@
 session_start();
 require('endPoint/Connection.php');
 
-
 if (!isset($_SESSION['username'])) {
     header('Location: Home.html');
     exit();
 }
 
 $username = $_SESSION['username'];
-
 
 $query = "SELECT MAX(`S.N.`) as max_sn FROM addexpense WHERE id = ?";
 $stmt = $con->prepare($query);
@@ -20,19 +18,18 @@ $row = $result->fetch_assoc();
 $next_sn = $row['max_sn'] + 1;
 $stmt->close();
 
-
 if (isset($_POST['add'])) {
     $expenseName = $_POST['expenseName'];
     $price = $_POST['price'];
     $description = $_POST['description'];
     $createdAt = $_POST['createdAt'];
 
-    $query = "INSERT INTO addexpense (`S.N.`, expenseName, price, description, date, id) VALUES (?, ?, ?, ?, ?,?)";
+    $query = "INSERT INTO addexpense (`S.N.`, expenseName, price, description, date, id) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($query);
     $stmt->bind_param("isdsss", $next_sn, $expenseName, $price, $description, $createdAt, $username);
 
     if ($stmt->execute()) {
-        header('Location: addYourExpense.php');
+        header('Location: expenseHistory.php');
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -53,7 +50,7 @@ if (isset($_POST['update'])) {
     $stmt->bind_param("sdssis", $expenseName, $price, $description, $createdAt, $edit_id, $username);
 
     if ($stmt->execute()) {
-        header('Location: addYourExpense.php');
+        header('Location: expenseHistory.php');
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -61,7 +58,6 @@ if (isset($_POST['update'])) {
 
     $stmt->close();
 }
-
 
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
@@ -71,7 +67,7 @@ if (isset($_GET['delete'])) {
     $stmt->bind_param("is", $delete_id, $username);
 
     if ($stmt->execute()) {
-        header('Location: addYourExpense.php');
+        header('Location: expenseHistory.php');
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -79,7 +75,6 @@ if (isset($_GET['delete'])) {
 
     $stmt->close();
 }
-
 
 $expense_to_edit = null;
 if (isset($_GET['edit'])) {
@@ -93,7 +88,6 @@ if (isset($_GET['edit'])) {
     $expense_to_edit = $result->fetch_assoc();
     $stmt->close();
 }
-
 
 $query = "SELECT * FROM addexpense WHERE id = ?";
 $stmt = $con->prepare($query);
@@ -113,13 +107,7 @@ $con->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="Assets/icon.png">
     <title>Add Expense</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
+    <script src="Assets/tailwind.js"></script>
 <body class="bg-gray-300">
 <header>
     <nav class="bg-gray-800 text-white w-full">
@@ -131,7 +119,6 @@ $con->close();
             <div class="flex space-x-4">
                 <a href="Dashboard.php" class="hover:text-gray-400">Home</a>
                 <a href="expenseHistory.php" class="hover:text-gray-400">ExpenseHistory</a>
-                <a href="profile.php" class="hover:text-gray-400">Profile</a>
                 <a href="Home.html" class="hover:text-gray-400">Logout</a>
             </div>
         </div>
@@ -139,7 +126,7 @@ $con->close();
 </header>
 
 <main class="container mx-auto mt-10 px-4">
-    <div class=" rounded-lg shadow-lg shadow-slate-300 bg-gray-400 border-2 border-gray-500">
+    <div class="rounded-lg shadow-lg shadow-slate-300 bg-gray-400 border-2 border-gray-500">
         <div class="p-6">
             <h2 class="text-2xl font-bold mb-6">Add or Edit Expense</h2>
             <form action="addYourExpense.php" method="POST">
@@ -172,69 +159,6 @@ $con->close();
             </form>
         </div>
     </div>
-
-    <!-- <div class="mt-8 bg-white border-2 border-gray-500 rounded-lg shadow-lg mb-4 ">
-        <div class="p-6">
-            <h2 class="text-2xl font-bold mb-6 grid place-content-center font-serif font-bold">Expenses List</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.N.</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <?php foreach ($expenses as $index => $expense): ?>
-                            <tr class="<?php echo $index % 2 === 0 ? 'bg-gray-50' : 'bg-white'; ?>">
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['S.N.']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['expenseName']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['price']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['description']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo $expense['date']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <a href="addYourExpense.php?edit=<?php echo $expense['S.N.']; ?>" class="text-blue-600 hover:underline mr-4">Edit</a>
-                                        <a href="addYourExpense.php?delete=<?php echo $expense['S.N.']; ?>" onclick="return confirm('Are you sure you want to delete this expense?');" class="text-red-600 hover:underline">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php if (empty($expenses)): ?>
-                            <tr>
-                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">No expenses found!</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> -->
 </main>
-
 </body>
 </html>
-
-
-
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const welcomeMessage = "Welcome to Expense Tracker";
-            let index = 0;
-            const speed = 130; // typing speed in milliseconds
-
-            function typeWriter() {
-                if (index < welcomeMessage.length) {
-                    document.getElementById("welcome-message").textContent += welcomeMessage.charAt(index);
-                    index++;
-                    setTimeout(typeWriter, speed);
-                }
-            }
-
-            typeWriter();
-        });
-    </script> -->
