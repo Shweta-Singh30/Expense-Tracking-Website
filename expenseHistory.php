@@ -58,7 +58,7 @@ $expenses = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 $con->close();
 
-// Handle delete action
+
 if (isset($_GET['delete'])) {
     $expenseId = $_GET['delete'];
     echo "<script>
@@ -138,25 +138,25 @@ if (isset($_GET['confirmDelete'])) {
             </div>
 
             <div id="filterInputs" class="flex flex-col space-y-2">
-                <!-- Date Filter -->
+               
                 <div id="dateFilter" class="filter-group <?php if ($filterOption != 'date') echo 'hidden'; ?>">
                     <label for="filterDate" class="block text-sm font-medium text-gray-700">Date</label>
                     <input type="date" id="filterDate" name="filterDate" value="<?php echo htmlspecialchars($filterDate); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
 
-                <!-- Week Filter -->
+               
                 <div id="weekFilter" class="filter-group <?php if ($filterOption != 'week') echo 'hidden'; ?>">
                     <label for="filterWeek" class="block text-sm font-medium text-gray-700">Select a Date</label>
                     <input type="date" id="filterWeek" name="filterWeek" value="<?php echo htmlspecialchars($filterWeek); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
 
-                <!-- Month Filter -->
+                
                 <div id="monthFilter" class="filter-group <?php if ($filterOption != 'month') echo 'hidden'; ?>">
                     <label for="filterMonth" class="block text-sm font-medium text-gray-700">Month</label>
                     <input type="month" id="filterMonth" name="filterMonth" value="<?php echo htmlspecialchars($filterMonth); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
 
-                <!-- Year Filter -->
+                
                 <div id="yearFilter" class="filter-group <?php if ($filterOption != 'year') echo 'hidden'; ?>">
                     <label for="filterYear" class="block text-sm font-medium text-gray-700">Year</label>
                     <input type="number" id="filterYear" name="filterYear" value="<?php echo htmlspecialchars($filterYear); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" min="2000" max="<?php echo date('Y'); ?>">
@@ -178,7 +178,7 @@ if (isset($_GET['confirmDelete'])) {
         </form>
     </div>
 
-    <!-- Legend for Price Ranges -->
+    
     <div class="flex justify-end mb-4">
         <div class="text-right">
             <div class="flex items-center mb-2">
@@ -207,7 +207,7 @@ if (isset($_GET['confirmDelete'])) {
     <div class="flex flex-wrap justify-center gap-6">
         <?php foreach ($expenses as $expense): ?>
             <?php
-                // Determine the icon color based on the price
+                
                 if ($expense['price'] < 1000) {
                     $iconColor = 'text-blue-900';
                 } elseif ($expense['price'] >= 1000 && $expense['price'] < 5000) {
